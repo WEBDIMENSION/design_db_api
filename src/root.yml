@@ -1,0 +1,35 @@
+openapi: 3.0.2
+
+info:
+  title: Structured OpenAPI Schema
+  description: descriptionn
+  version: '1.0'
+
+servers:
+  - url: http://develop.local:8080
+    description: Mock server (prism)
+  - url: http://develop.local:{port}/{api_version}
+    description: Develop server
+    variables:
+      api_version:
+        default: 'v3'
+        enum:
+          - 'v1'
+          - 'v2'
+          - 'v3'
+      port:
+        default: '8080'
+        enum:
+          - '8080'
+          - '8081'
+          - '8082'
+
+tags:
+  - name: user
+    description: tag for user
+
+paths:
+  /users:
+    $ref: ./paths/users.yml
+  /users/{user_id}:
+    $ref: ./paths/users-by-id.yml

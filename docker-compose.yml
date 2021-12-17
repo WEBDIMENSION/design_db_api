@@ -1,0 +1,30 @@
+version: '3'
+services:
+  openapi:
+    build: ./docker/openapi
+    container_name: ${OPENAPI_GENERATER_CONTAINER_NAME}
+    volumes:
+      - ${DIR}/generated:/app/generated
+      - ${DIR}/src:/app/src
+      - ${DIR}/docker/openapi/package.json:/app/package.json
+    tty: true
+
+  prism:
+    build: ./docker/prism
+    container_name: ${PRISM_CONTAINER_NAME}
+    command: 'mock -h 0.0.0.0 -d /app/openapi.json'
+    volumes:
+      - ${DIR}/generated/openapi/openapi.json:/app/openapi.json
+    ports:
+      - '${PRISM_CLIENT_PORT}:4010'
+
+  swagger-ui:
+    build: ./docker/react
+    container_name: ${SWAGGER_UI_CONTAINER_NAME}
+    volumes:
+      - ${DIR}/docker/react/public:/app/html/public
+      - ${DIR}/docker/react/src:/app/html/src
+      - ${DIR}/generated/openapi:/app/html/public/openapi
+    command: sh -c "cd html && npm run start"
+    ports:
+      - "${SWAGGER_UI_CLIENT_PORT}:3000"
