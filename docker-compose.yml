@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   openapi:
     build: ./docker/openapi
@@ -21,10 +22,13 @@ services:
   swagger-ui:
     build: ./docker/react
     container_name: ${SWAGGER_UI_CONTAINER_NAME}
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - PORT=${SWAGGER_UI_CLIENT_PORT}
     volumes:
       - ${DIR}/docker/react/public:/app/html/public
       - ${DIR}/docker/react/src:/app/html/src
       - ${DIR}/generated/openapi:/app/html/public/openapi
-    command: sh -c "cd html && npm run start"
+    command: sh -c "cd html && yarn start"
     ports:
-      - "${SWAGGER_UI_CLIENT_PORT}:3000"
+      - "${SWAGGER_UI_CLIENT_PORT}:${SWAGGER_UI_CLIENT_PORT}"
