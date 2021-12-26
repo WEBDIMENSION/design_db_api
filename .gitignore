@@ -2,3 +2,6 @@ dist
 generated
 .env
 .node-version
+.devcontainer
+*.code-workspace
+.vscode

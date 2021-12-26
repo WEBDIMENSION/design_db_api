@@ -12,7 +12,7 @@ servers:
     description: Develop server
     variables:
       api_version:
-        default: 'v3'
+        default: 'v1'
         enum:
           - 'v1'
           - 'v2'

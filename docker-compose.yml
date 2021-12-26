@@ -28,7 +28,7 @@ services:
     volumes:
       - ${DIR}/docker/react/public:/app/html/public
       - ${DIR}/docker/react/src:/app/html/src
-      - ${DIR}/generated/openapi:/app/html/public/openapi
+      - ${DIR}/generated/openapi/openapi.json:/app/html/public/openapi.json
     command: sh -c "cd html && yarn start"
     ports:
       - "${SWAGGER_UI_CLIENT_PORT}:${SWAGGER_UI_CLIENT_PORT}"
