@@ -1,13 +1,1 @@
-products
-user_ranks
-payment
-shipping
-staff_roles
-users
-staffs
-orders
-order_details
-login_history
-product_reviews
-order_total
 migrations

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<database name="shop" schema="shop" type="MySQL - 5.7.36-log">
+<database name="shop" schema="shop" type="MySQL - 5.7.41-log">
    <tables>
       <table catalog="shop" name="login_history" numRows="200" remarks="" type="TABLE">
          <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>

@@ -1,13 +1,1 @@
 migrations
-order_total
-product_reviews
-login_history
-order_details
-orders
-staffs
-users
-staff_roles
-shipping
-payment
-user_ranks
-products

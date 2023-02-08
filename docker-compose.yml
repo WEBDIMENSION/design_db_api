@@ -3,7 +3,7 @@ version: '3'
 services:
   openapi:
     build: ./docker/openapi
-    container_name: ${OPENAPI_GENERATER_CONTAINER_NAME}
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_openapi
     volumes:
       - ${DIR}/generated:/app/generated
       - ${DIR}/src:/app/src
@@ -12,7 +12,7 @@ services:
 
   prism:
     build: ./docker/prism
-    container_name: ${PRISM_CONTAINER_NAME}
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_prism
     command: 'mock -h 0.0.0.0 -d /app/openapi.json'
     volumes:
       - ${DIR}/generated/openapi/openapi.json:/app/openapi.json
@@ -21,7 +21,7 @@ services:
 
   swagger-ui:
     build: ./docker/react
-    container_name: ${SWAGGER_UI_CONTAINER_NAME}
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_swagger-ui
     environment:
       - CHOKIDAR_USEPOLLING=true
       - PORT=${SWAGGER_UI_CLIENT_PORT}
@@ -34,6 +34,7 @@ services:
       - "${SWAGGER_UI_CLIENT_PORT}:${SWAGGER_UI_CLIENT_PORT}"
   schemaspy:
     image: schemaspy/schemaspy
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_schemaspy
     volumes:
       - ${DIR}/schemaspy/output:/output
       - ${DIR}/Docker/schemaspy/drivers:${DB_DRIVERS_DIR}
@@ -51,7 +52,7 @@ services:
 
   nginx:
     image: nginx:1.13.9-alpine
-    container_name: schemaspy_nginx
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_nginx
     volumes:
       - ${DIR}/schemaspy/output:/var/www/html:ro
       - ${DIR}/Docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
@@ -64,11 +65,12 @@ services:
 
   phpmig:
     build: ./Docker/phpmig
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_phpmig
     volumes:
       - ${DIR}//Docker/phpmig/src/:/app/src
       - ${DIR}/Docker/phpmig/php.ini:/usr/local/etc/php/php.ini
       - ${DIR}/Docker/phpmig/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-      - ${DIR}/migration:/migration
+      - ${DIR}/migrations:/migrations
     environment:
       MYSQL_HOST: ${DB_HOST}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -82,7 +84,7 @@ services:
 
   mysql:
     image: mysql:5.7
-    container_name: ${COMPOSE_PROJECT_NAME}_mysql5_7
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_mysql
     user: "1000:50"
     volumes:
       - ${DIR}/Docker/mysql/my.cnf:/etc/my.cnf
@@ -95,6 +97,8 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_HOST: ${DB_INTERNAL_PORT}
+      MYSQL_INTERNAL_PORT:
     ports:
       - ${DB_EXTERNAL_PORT}:${DB_INTERNAL_PORT}
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb_use_native_aio=0

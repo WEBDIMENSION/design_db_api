@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>shop Database</title>
+        <title>ec Database</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
@@ -46,7 +46,7 @@
                 <nav class="navbar navbar-static-top">
                     <div class="container">
                         <div class="navbar-header">
-                            <a href="index.html" class="navbar-brand"><b>shop</b> Database</a>
+                            <a href="index.html" class="navbar-brand"><b>ec</b> Database</a>
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"><i class="fa fa-bars"></i></button>
                         </div>
 
@@ -77,93 +77,10 @@
                 </section>
                 <!-- Main content -->
                 <section class="content">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-code-fork"></i>
-                            <h3 class="box-title">Diagrams</h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="nav-tabs-custom">
-                                <!-- Tabs within a box -->
-                                <h5>By default only columns that are primary keys, foreign keys or indexes are shown.</h5>
-                                <ul class="nav nav-tabs pull-left ui-sortable-handle">
-                                    <li class="active"><a href="#compactDegreeImg-chart" data-toggle="tab" aria-expanded="true">Compact</a></li>
-                                    <li class=""><a href="#largeDegreeImg-chart" data-toggle="tab" aria-expanded="true">Large</a></li>
-                                    <li class=""><a href="#compactimpliedDegreeImg-chart" data-toggle="tab" aria-expanded="true">Compact Implied</a></li>
-                                    <li class=""><a href="#largeimpliedDegreeImg-chart" data-toggle="tab" aria-expanded="true">Large Implied</a></li>
-                                </ul>
-                                <div class="tab-content no-padding">
-                                    <div class="chart tab-pane active" id="compactDegreeImg-chart" style="position: relative; overflow-x:auto;">
-                                        <map id="compactRelationshipsDiagram" name="compactRelationshipsDiagram">
-<area shape="rect" id="node1" href="tables/login_history.html" target="_top" title="login_history" alt="" coords="443,5,625,152">
-<area shape="rect" id="node12" href="tables/users.html" target="_top" title="users" alt="" coords="216,160,389,307">
-<area shape="rect" id="node2" href="tables/order_details.html" target="_top" title="order_details" alt="" coords="684,203,885,379">
-<area shape="rect" id="node4" href="tables/orders.html" target="_top" title="orders" alt="" coords="447,169,621,375">
-<area shape="rect" id="node7" href="tables/products.html" target="_top" title="products" alt="" coords="433,392,635,509">
-<area shape="rect" id="node3" href="tables/order_total.html" target="_top" title="order_total" alt="" coords="935,531,1105,736">
-<area shape="rect" id="node5" href="tables/payment.html" target="_top" title="payment" alt="" coords="707,724,862,841">
-<area shape="rect" id="node8" href="tables/shipping.html" target="_top" title="shipping" alt="" coords="709,589,860,707">
-<area shape="rect" id="node10" href="tables/staffs.html" target="_top" title="staffs" alt="" coords="229,324,377,471">
-<area shape="rect" id="node6" href="tables/product_reviews.html" target="_top" title="product_reviews" alt="" coords="679,396,891,572">
-<area shape="rect" id="node9" href="tables/staff_roles.html" target="_top" title="staff_roles" alt="" coords="7,353,171,471">
-<area shape="rect" id="node11" href="tables/user_ranks.html" target="_top" title="user_ranks" alt="" coords="5,189,172,307">
-</map>
-                                        <a name='diagram'><img id="compactDegreeImg" src="diagrams/summary/relationships.real.compact.png" usemap="#compactRelationshipsDiagram" class="diagram" border="0" align="left"></a>
-                                    </div>
-                                    <div class="chart tab-pane " id="largeDegreeImg-chart" style="position: relative; overflow-x:auto;">
-                                        <map id="largeRelationshipsDiagram" name="largeRelationshipsDiagram">
-<area shape="rect" id="node1" href="tables/login_history.html" target="_top" title="login_history" alt="" coords="443,5,625,304">
-<area shape="rect" id="node12" href="tables/users.html" target="_top" title="users" alt="" coords="216,252,389,844">
-<area shape="rect" id="node2" href="tables/order_details.html" target="_top" title="order_details" alt="" coords="684,671,885,1087">
-<area shape="rect" id="node4" href="tables/orders.html" target="_top" title="orders" alt="" coords="447,321,621,913">
-<area shape="rect" id="node7" href="tables/products.html" target="_top" title="products" alt="" coords="433,931,635,1405">
-<area shape="rect" id="node3" href="tables/order_total.html" target="_top" title="order_total" alt="" coords="935,1332,1105,1777">
-<area shape="rect" id="node5" href="tables/payment.html" target="_top" title="payment" alt="" coords="707,1707,862,1976">
-<area shape="rect" id="node8" href="tables/shipping.html" target="_top" title="shipping" alt="" coords="709,1420,860,1689">
-<area shape="rect" id="node10" href="tables/staffs.html" target="_top" title="staffs" alt="" coords="229,861,377,1131">
-<area shape="rect" id="node6" href="tables/product_reviews.html" target="_top" title="product_reviews" alt="" coords="679,1104,891,1403">
-<area shape="rect" id="node9" href="tables/staff_roles.html" target="_top" title="staff_roles" alt="" coords="7,920,171,1160">
-<area shape="rect" id="node11" href="tables/user_ranks.html" target="_top" title="user_ranks" alt="" coords="5,633,172,873">
-</map>
-                                        <a name='diagram'><img id="largeDegreeImg" src="diagrams/summary/relationships.real.large.png" usemap="#largeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
-                                    </div>
-                                    <div class="chart tab-pane " id="compactimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
-                                        <map id="compactImpliedRelationshipsDiagram" name="compactImpliedRelationshipsDiagram">
-<area shape="rect" id="node1" href="tables/login_history.html" target="_top" title="login_history" alt="" coords="443,5,625,152">
-<area shape="rect" id="node12" href="tables/users.html" target="_top" title="users" alt="" coords="216,187,389,333">
-<area shape="rect" id="node2" href="tables/order_details.html" target="_top" title="order_details" alt="" coords="684,321,885,497">
-<area shape="rect" id="node4" href="tables/orders.html" target="_top" title="orders" alt="" coords="447,340,621,575">
-<area shape="rect" id="node7" href="tables/products.html" target="_top" title="products" alt="" coords="433,205,635,323">
-<area shape="rect" id="node3" href="tables/order_total.html" target="_top" title="order_total" alt="" coords="935,456,1105,661">
-<area shape="rect" id="node5" href="tables/payment.html" target="_top" title="payment" alt="" coords="707,649,862,767">
-<area shape="rect" id="node8" href="tables/shipping.html" target="_top" title="shipping" alt="" coords="709,515,860,632">
-<area shape="rect" id="node10" href="tables/staffs.html" target="_top" title="staffs" alt="" coords="229,457,377,604">
-<area shape="rect" id="node11" href="tables/user_ranks.html" target="_top" title="user_ranks" alt="" coords="5,284,172,401">
-<area shape="rect" id="node6" href="tables/product_reviews.html" target="_top" title="product_reviews" alt="" coords="679,91,891,267">
-<area shape="rect" id="node9" href="tables/staff_roles.html" target="_top" title="staff_roles" alt="" coords="7,487,171,604">
-</map>
-                                        <a name='diagram'><img id="compactimpliedDegreeImg" src="diagrams/summary/relationships.implied.compact.png" usemap="#compactImpliedRelationshipsDiagram" class="diagram" border="0" align="left"></a>
-                                    </div>
-                                    <div class="chart tab-pane " id="largeimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
-                                        <map id="largeImpliedRelationshipsDiagram" name="largeImpliedRelationshipsDiagram">
-<area shape="rect" id="node1" href="tables/login_history.html" target="_top" title="login_history" alt="" coords="443,5,625,304">
-<area shape="rect" id="node12" href="tables/users.html" target="_top" title="users" alt="" coords="216,417,389,1009">
-<area shape="rect" id="node2" href="tables/order_details.html" target="_top" title="order_details" alt="" coords="684,721,885,1137">
-<area shape="rect" id="node4" href="tables/orders.html" target="_top" title="orders" alt="" coords="447,849,621,1441">
-<area shape="rect" id="node7" href="tables/products.html" target="_top" title="products" alt="" coords="433,357,635,832">
-<area shape="rect" id="node3" href="tables/order_total.html" target="_top" title="order_total" alt="" coords="935,1067,1105,1512">
-<area shape="rect" id="node5" href="tables/payment.html" target="_top" title="payment" alt="" coords="707,1441,862,1711">
-<area shape="rect" id="node8" href="tables/shipping.html" target="_top" title="shipping" alt="" coords="709,1155,860,1424">
-<area shape="rect" id="node10" href="tables/staffs.html" target="_top" title="staffs" alt="" coords="229,1260,377,1529">
-<area shape="rect" id="node11" href="tables/user_ranks.html" target="_top" title="user_ranks" alt="" coords="5,931,172,1171">
-<area shape="rect" id="node6" href="tables/product_reviews.html" target="_top" title="product_reviews" alt="" coords="679,276,891,575">
-<area shape="rect" id="node9" href="tables/staff_roles.html" target="_top" title="staff_roles" alt="" coords="7,1319,171,1559">
-</map>
-                                        <a name='diagram'><img id="largeimpliedDegreeImg" src="diagrams/summary/relationships.implied.large.png" usemap="#largeImpliedRelationshipsDiagram" class="diagram" border="0" align="left"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.box-body -->
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i> Missed Relationships!</h4>
+                        <p>No relationships were detected in the schema.</p>
                     </div>
                 </section>
             </div>

@@ -30,7 +30,8 @@ $container['db'] = function () {
     return $dbh;
 };
 
-$container['phpmig.migrations_path'] = __DIR__ . DIRECTORY_SEPARATOR . 'migrations';
+$container['phpmig.migrations_path'] = '/migrations';
+//$container['phpmig.migrations_path'] = __DIR__ . DIRECTORY_SEPARATOR . 'migrations';
 
 // You can also provide an array of migration files
 // $container['phpmig.migrations'] = array_merge(
