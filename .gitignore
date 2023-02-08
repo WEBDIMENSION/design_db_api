@@ -5,3 +5,4 @@ generated
 .devcontainer
 *.code-workspace
 .vscode
+schemaspy/output

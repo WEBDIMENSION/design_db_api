@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<database name="ec" schema="ec" type="MySQL - 5.7.41-log">
-   <tables>
-      <table catalog="ec" name="migrations" numRows="0" remarks="" type="TABLE">
-         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="version" nullable="false" remarks="" size="255" type="VARCHAR" typeCode="12"/>
-      </table>
-   </tables>
-</database>

@@ -6,7 +6,7 @@ services:
     container_name: ${PRISM_CONTAINER_NAME_PREFIX}_openapi
     volumes:
       - ${DIR}/generated:/app/generated
-      - ${DIR}/src:/app/src
+      - ${DIR}/openapi:/app/src
       - ${DIR}/docker/openapi/package.json:/app/package.json
     tty: true
 
