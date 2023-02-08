@@ -1,6 +1,6 @@
 get:
-  operationId: usersget
-  summary: get user list (summary)
+  operationId: get-users
+  summary: get users list (summary)
   description: description post not
   tags: [user]
   parameters:

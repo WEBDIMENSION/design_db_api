@@ -6,7 +6,7 @@ info:
   version: '1.0'
 
 servers:
-  - url: http://develop.local:8080
+  - url: http://develop.local:8001
     description: Mock server (prism)
   - url: http://develop.local:{port}/{api_version}
     description: Develop server

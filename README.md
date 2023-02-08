@@ -29,3 +29,8 @@
 
 ### 取り急ぎの処理
 REACT上でホットリロードを実現させたかったがとりあえずは 'src/' 配下の変更を検知してリロード。
+
+
+develop.local:<PORT_NUMBER>
+develop.local:8002
+* .env 参照

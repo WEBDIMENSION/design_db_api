@@ -11,13 +11,12 @@ ENV SHELL /bin/sh
 
 WORKDIR /app
 
-RUN npm install -g npm
-RUN npm install -g n
-RUN n v16.0.0
-RUN npm update -g npm
+#RUN npm install -g npm
+#RUN npm install -g n
+#RUN n v16.0.0
+RUN #npm update -g npm
 
 COPY package.json ./
 RUN npm install
 
 ENTRYPOINT ["/bin/sh", "-c", "npm run watch"]
-
