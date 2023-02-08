@@ -30,6 +30,6 @@ tags:
 
 paths:
   /users:
-    $ref: ./paths/users.yml
+    $ref: ./paths/users/users.yml
   /users/{user_id}:
-    $ref: ./paths/users-by-id.yml
+    $ref: ./paths/users/users-by-id.yml
