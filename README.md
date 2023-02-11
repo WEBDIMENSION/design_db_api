@@ -1,28 +1,64 @@
-# OpenAPI generater & Prism & Swagger-UI & schemaspy & DB操作 の習得を目標とする
+# Design DB, API
+
+## Overview
+
+DB設計・操作, API設計の習得を目標とする
+
+### ツール
+
+- Docker, Docker-comose
+    - OpenApi
+    - swagger-ui + api
+    - prism
+    - phpmig
+    - mysql8
+    - postgres14
+    - schemaspy + nginx
+        - for mysql
+        - for postgres
+
+### 振る舞い
+
+- phpmig
+    - DDL を記述 `phpmig/migrationns/mysql` `phpmig/migrationns/postgres`
+    - seeder,fakerでダミーデータ生成
+- schemaspy
+    - `docker-compose up -d` で起動、`depends_on:` でDBの起動依存
+    - DB構造、リレーションなどを確認
+- openapi
+    - api設計を`yml`で記述。記述に変更があれば随時 `openapi.json` を再生性
+- swagger-ui + react
+    - `openapi` が アウトプットした `openapi.json` を読み込みブラウザで確認 (reactで読み込んでるためhot reload)
+- prism
+    - mockサーバー `openapi.json` を読み込み `json` を返す
 
 ## Usage
 
+***portは.envで変更可***
+
 ### コンテナ起動
+
+すべてのサービス起動
 
 ```bash
 docker-compose up -d
 ```
 
----
+ ---
 
 ### schemaspy
 
+- `docker-compose up -d` 時に起動(解析)する。
+- `depends_on:` でDB起動に依存。
+- DBに変更があった場合は `docker-compose up -d` or `docker-compose run --rm schemaspy_[mysql | postgres]`
+
 #### MySQL
+
 - [schemaspy : http://localhost:8003/](http://localhost:8003/)
- 
+
 #### Postgres
+
 - [schemaspy : http://localhost:8004/](http://localhost:8004/)
-
-
-```bash
-# genarate
-docker-compose up -d schemaspy
-```
 
 ---
 
@@ -39,39 +75,6 @@ docker-compose up -d schemaspy
 *parameter is see suwagger-ui
 
 ---
-
-## Overview
-
-1. openapi (./openapi/) ソースから`openapi.json` を生成
-    - 分割ファイル(yaml)を結合して`openapijson`を生成
-    - Prism, Swagger-UI でこの `openapi.json` を読み込に表示
-
-   ```bash
-   docker-compose up -d openapi
-   # generated/openapi/openapi.json が生成される
-   ```
-
-   **package,json**  
-   src/ 配下のymlを監視
-   ```bash
-   "watch": "chokidar 'src/root.yml' 'src/**/*.yml' -c 'npm run schema_json' --initial --polling"
-   ```
-2. Prism, Swagger-UI 起動
-   ```bash
-   docker-compose up -d
-   ```
-
-## Swagger-UI on REACT
-
-### Swaggeer-UI を REACT上で動かす理由
-
-- Intellij IDEA のプレビューはリロードしない。（手動で更新）
-- Visual Studio Code のプレビューは ルートの yml にはホットリロードするが分割ファイルには追従しない。
-- Swagger-UI オリジナルではリロードしない。 （手動で更新）
-
-### 取り急ぎの処理
-
-REACT上でホットリロードを実現させたかったがとりあえずは 'src/' 配下の変更を検知してリロード。
 
 ## Theme
 
@@ -94,5 +97,3 @@ ECサイトのDBを想定
 | 顧客マスター | customers          |
 | 商品カテゴリ | product_categories |
 | 商品レビュー | product_reviews    |
-
-See! Document/Tables
