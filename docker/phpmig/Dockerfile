@@ -8,10 +8,11 @@ RUN apt-get install -y \
     curl \
     vim \
     gnupg \
+    libpq-dev \
   && pecl install xdebug \
   && docker-php-ext-enable xdebug
 
 WORKDIR /app/src
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN docker-php-ext-install pdo_mysql mysqli
+RUN docker-php-ext-install pdo_mysql mysqli pdo_pgsql

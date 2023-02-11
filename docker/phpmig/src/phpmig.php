@@ -3,7 +3,7 @@
 use Phpmig\Adapter;
 use Pimple\Container;
 
-require_once(__DIR__ . DIRECTORY_SEPARATOR . 'include/define.php');
+require_once('/phpmig/define.php');
 require_once 'vendor/autoload.php';
 
 
@@ -15,23 +15,37 @@ $container = new Container();
 $container['phpmig.adapter'] = function ($c) {
     return new Adapter\PDO\Sql($c['db'], 'migrations');
 };
-
 //DBの接続情報
+$migration_path = '';
 $container['db'] = function () {
-    $dbh = new PDO(
-        'mysql:dbname=' . $_ENV['MYSQL_DATABASE'] .
-        ';host=' . $_ENV['MYSQL_HOST'] .
-        ';port=' . $_ENV['MYSQL_INTERNAL_PORT'] .
-        ';charset=utf8',
-        $_ENV['MYSQL_USER'],
-        $_ENV['MYSQL_PASSWORD']
-    );
+    if ($_ENV['TARGET_DB'] == 'postgres') {
+        #### Postgres ####
+        $dbh = new PDO(
+            'pgsql:dbname=' . $_ENV['POSTGRES_DB'] .
+            ';host=' . $_ENV['POSTGRES_HOST'] .
+            ';port=' . $_ENV['POSTGRES_INTERNAL_PORT'] .
+            ';',
+            $_ENV['POSTGRES_USER'],
+            $_ENV['POSTGRES_PASSWORD']
+        );
+    } else {
+        #### MySQL ####
+        $dbh = new PDO(
+            'mysql:dbname=' . $_ENV['MYSQL_DATABASE'] .
+            ';host=' . $_ENV['MYSQL_HOST'] .
+            ';port=' . $_ENV['MYSQL_INTERNAL_PORT'] .
+            ';charset=utf8',
+            $_ENV['MYSQL_USER'],
+            $_ENV['MYSQL_PASSWORD']
+        );
+
+    }
+
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
 };
 
-$container['phpmig.migrations_path'] = '/migrations';
-//$container['phpmig.migrations_path'] = __DIR__ . DIRECTORY_SEPARATOR . 'migrations';
+$container['phpmig.migrations_path'] = '/phpmig/migrations/' . $_ENV['TARGET_DB'];
 
 // You can also provide an array of migration files
 // $container['phpmig.migrations'] = array_merge(
