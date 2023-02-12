@@ -38,7 +38,6 @@ $container['db'] = function () {
             $_ENV['MYSQL_USER'],
             $_ENV['MYSQL_PASSWORD']
         );
-
     }
 
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
