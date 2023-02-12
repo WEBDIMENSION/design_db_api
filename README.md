@@ -82,19 +82,19 @@ ECサイトのDBを想定
 
 ### Tables
 
-| 用途     | Table名             |
-|--------|--------------------|
-| ログイン履歴 | login_history      |
-| 受注商品   | orders_detail      |
-| 受注明細   | orders_total       |
-| 受注     | orders             |
-| 支払い方法  | payment            |
-| 商品レビュー | product_reviews    |
-| 商品マスター | products           |
-| 配送方法   | shipping           |
-| スタッフ権限 | staff_roles        |
-| スタッフ   | staffs             |
-| 顧客マスター | users              |
-| 顧客権限   | users_ranks        |
-| 商品ブランド | brands             |
-| 商品カテゴリ | product_categories |
+| 用途     | Table名             | migration_prefix_number |
+|--------|--------------------|-------------------------|
+| 商品カテゴリ | product_categories | 008xxx                  |
+| ログイン履歴 | login_history      | 007xxx                  |
+| 受注商品   | orders_detail      | 014xxx                  |
+| 受注明細   | orders_total       | 015xxx                  |
+| 受注     | orders             | 013xxx                  |
+| 支払い方法  | payment            | 004xxx                  |
+| 商品レビュー | product_reviews    | 012xxx                  |
+| 商品マスター | products           | 011xxx                  |
+| 配送方法   | deliveries         | 003xxx                  |
+| スタッフ権限 | staff_roles        | 001xxx                  |
+| スタッフ   | staffs             | 002xxx                  |
+| 顧客マスター | users              | 006xxx                  |
+| 顧客権限   | users_ranks        | 005xxx                  |
+| 商品ブランド | brands             | 010xxx                  |

@@ -5,12 +5,12 @@
 - Table名を複数形
 
 - Table名変更
-    - [ ] shipping -> deliveries
+    - [x] shipping -> deliveries
 
 
 - Table作成
-    - [ ] 商品ブランド : brands
-    - [ ] 商品カテゴリ : product_categories
+    - [x] 商品ブランド : brands
+    - [x] 商品カテゴリ : product_categories
 
 
 - データ量を増やす

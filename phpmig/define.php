@@ -27,7 +27,7 @@ const USERS_DATA_ROWS_COUNT = 100;
 const USERS_DELETED_ROWS_COUNT = 10;
 
 // login_history
-const TABLE_LOGIN_HISTORY = 'login_history';
+const TABLE_LOGIN_HISTORIES = 'login_histories';
 const LOGIN_HISTORY_DATA_ROWS_COUNT = 200;
 
 // products
@@ -52,24 +52,53 @@ const ORDER_DETAILS_QUANTITY_MIN_COUNT = 1;
 const ORDER_DETAILS_QUANTITY_MAX_COUNT = 3;
 
 // orders total
-const TABLE_ORDER_TOTAL = 'order_total';
+const TABLE_ORDER_TOTALS = 'order_totals';
 
 // product reviews
 const TABLE_PRODUCT_REVIEWS = 'product_reviews';
 const PRODUCTS_REVIEW_ROWS_COUNT = 50;
 
-// shipping
-const TABLE_SHIPPING = 'shipping';
-const ORDERS_SHIPPING = [
+// delivery
+const TABLE_DELIVERIES = 'deliveries';
+const ORDERS_DELIVERIES = [
     ['name' => 'ヤマト運輸', 'cost' => 600],
     ['name' => '佐川急便', 'cost' => 500],
     ['name' => 'ゆうパック', 'cost' => 400]
 ];
 
 // payment
-const TABLE_PAYMENT = 'payment';
-const ORDERS_PAYMENT = [
+const TABLE_PAYMENTS = 'payments';
+const ORDERS_PAYMENTS = [
     ['name' => 'クレジットカード', 'cost' => 0],
     ['name' => 'コンビニ', 'cost' => 300],
     ['name' => '銀行振込', 'cost' => 100]
+];
+
+// product_brands
+const TABLE_BRANDS = 'brands';
+const ORDERS_BRANDS = [
+    ['name' => 'Brand001'],
+    ['name' => 'Brand002'],
+    ['name' => 'Brand003'],
+    ['name' => 'Brand004'],
+    ['name' => 'Brand005'],
+    ['name' => 'Brand006'],
+    ['name' => 'Brand007'],
+    ['name' => 'Brand008'],
+    ['name' => 'Brand009'],
+    ['name' => 'Brand010'],
+];
+// product_categories
+const TABLE_CATEGORIES = 'product_categories';
+const ORDERS_CATEGORIES = [
+    ['name' => 'category001'],
+    ['name' => 'category002'],
+    ['name' => 'category003'],
+    ['name' => 'category004'],
+    ['name' => 'category005'],
+    ['name' => 'category006'],
+    ['name' => 'category007'],
+    ['name' => 'category008'],
+    ['name' => 'category009'],
+    ['name' => 'category010'],
 ];
