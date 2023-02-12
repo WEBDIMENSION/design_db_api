@@ -47,7 +47,7 @@ class insertOrderDetails extends Migration
                          '" . $faker->numberBetween(
                         $min = ORDER_DETAILS_QUANTITY_MIN_COUNT,
                         $max = ORDER_DETAILS_QUANTITY_MAX_COUNT
-                             ) . "',
+                    ) . "',
                          '" . $products_array[$tmp_product_id]['jan_code'] . "',
                          '" . $products_array[$tmp_product_id]['category_id'] . "',
                          '" . $products_array[$tmp_product_id]['brand_id'] . "',

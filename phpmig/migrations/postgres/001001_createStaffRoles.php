@@ -12,7 +12,7 @@ class createStaffRoles extends Migration
         $sql = "
         CREATE TABLE " . TABLE_STAFF_ROLES . " (
             id SERIAL NOT NULL,
-            user_rank_name varchar(50) NOT NULL,
+            name varchar(50) NOT NULL,
             memo varchar(255) NOT NULL,
             delete_flg boolean NOT NULL DEFAULT false,
             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,

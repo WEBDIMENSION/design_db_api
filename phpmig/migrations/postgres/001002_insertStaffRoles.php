@@ -17,7 +17,7 @@ class insertStaffRoles extends Migration
             $stmt = $container['db']->prepare(
                 "insert into " . TABLE_STAFF_ROLES . "
                (
-                   user_rank_name,
+                   name,
                    memo
                ) values (
                 '" . $staff_roles_array[$i] . "',

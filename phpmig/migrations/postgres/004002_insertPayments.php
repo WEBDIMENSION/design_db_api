@@ -14,7 +14,7 @@ class insertPayments extends Migration
 
         for ($i = 0; $i < count(ORDERS_PAYMENTS); $i++) {
             $stmt = $container['db']->prepare(
-                "insert into " . TABLE_PAYMENTS. "
+                "insert into " . TABLE_PAYMENTS . "
                         (
                             payment_name,
                             payment_cost,

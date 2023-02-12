@@ -30,7 +30,7 @@ class CreateUserRanks extends Migration
     public function down()
     {
         $sql = "
-        DROP TABLE " .TABLE_USER_RANKS . "
+        DROP TABLE " . TABLE_USER_RANKS . "
         ";
         $container = $this->getContainer();
         $container['db']->query($sql);

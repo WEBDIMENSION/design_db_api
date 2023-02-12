@@ -20,7 +20,7 @@ class CreateOrderTotals extends Migration
             payment_id integer NOT NULL,
             payment_name varchar(50) NOT NULL,
             payment_cost numeric(10) NOT NULL,
-            total numeric(10) NOT NULL,
+            order_total numeric(10) NOT NULL,
             delete_flg boolean NOT NULL DEFAULT false,
             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,

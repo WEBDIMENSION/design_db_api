@@ -28,10 +28,10 @@ class CreateProducts extends Migration
             `created_at` datetime DEFAULT CURRENT_TIMESTAMP(),
             `updated_at` datetime DEFAULT CURRENT_TIMESTAMP(),
             PRIMARY KEY (`id`),
-            FOREIGN KEY (`brand_id`) REFERENCES " .TABLE_BRANDS. "(`id`) 
+            FOREIGN KEY (`brand_id`) REFERENCES " . TABLE_BRANDS . "(`id`) 
              ON DELETE CASCADE
              ON UPDATE CASCADE,
-            FOREIGN KEY (`category_id`) REFERENCES " .TABLE_CATEGORIES. "(`id`) 
+            FOREIGN KEY (`category_id`) REFERENCES " . TABLE_CATEGORIES . "(`id`) 
              ON DELETE CASCADE
              ON UPDATE CASCADE
             ) ENGINE=InnoDB;

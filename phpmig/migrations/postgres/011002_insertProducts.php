@@ -75,8 +75,8 @@ class insertProducts extends Migration
                 '" . $faker->unique()->ean13() . "',
                 '" . $faker->realText(40) . "',
                 '" . $faker->realText(200) . "',
-                '" . $faker->randomElement($brand_array)['id']. "',
-                '" . $faker->randomElement($category_array)['id']. "',
+                '" . $faker->randomElement($brand_array)['id'] . "',
+                '" . $faker->randomElement($category_array)['id'] . "',
                 " . $delete_flg . ",
                 '" . $created_at . "',
                 '" . $updated_at . "'

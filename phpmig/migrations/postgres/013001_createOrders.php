@@ -9,7 +9,8 @@ class CreateOrders extends Migration
      */
     public function up()
     {
-        $sql = "CREATE TABLE " . TABLE_ORDERS . " (
+        $sql =
+            "CREATE TABLE " . TABLE_ORDERS . " (
             id SERIAL NOT NULL,
             order_id varchar(50) NOT NULL,
             user_id integer NOT NULL,
@@ -42,7 +43,6 @@ class CreateOrders extends Migration
 
         $sql = "CREATE UNIQUE INDEX idx_orders_orders_id_orders ON " . TABLE_ORDERS . "  (order_id);";
         $container['db']->query($sql);
-
 
 
     }

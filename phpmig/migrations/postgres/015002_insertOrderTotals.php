@@ -51,7 +51,7 @@ class insertOrderTotals extends Migration
 
 
             $stmt = $container['db']->prepare(
-                "insert into " . TABLE_ORDER_TOTALS. "
+                "insert into " . TABLE_ORDER_TOTALS . "
                         (
                             order_id,
                             sub_total,
@@ -61,7 +61,7 @@ class insertOrderTotals extends Migration
                             payment_id,
                             payment_name,
                             payment_cost,
-                            total,
+                            order_total,
                             created_at,
                             updated_at
                         ) values (

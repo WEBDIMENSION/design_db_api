@@ -30,7 +30,7 @@ class createUsers extends Migration
             created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (id),
-            FOREIGN KEY (user_rank_id) REFERENCES " .TABLE_USER_RANKS. "(id) 
+            FOREIGN KEY (user_rank_id) REFERENCES " . TABLE_USER_RANKS . "(id) 
              ON DELETE CASCADE
              ON UPDATE CASCADE
             ) ;

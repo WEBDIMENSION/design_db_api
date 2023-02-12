@@ -42,7 +42,7 @@ class insertOrders extends Migration
                    created_at,
                    updated_at
                ) values (
-                '" .$faker->dateTimeBetween(USERS_CREATED_FROM, USERS_CREATED_TO)->format('Y-m-d')
+                '" . $faker->dateTimeBetween(USERS_CREATED_FROM, USERS_CREATED_TO)->format('Y-m-d')
                 . $faker->unique->randomNumber(9) . "',
                 '" . $users_array[$user_id_number]['id'] . "',
                 '" . $users_array[$user_id_number]['firstname'] . "',
