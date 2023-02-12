@@ -2,8 +2,6 @@
 
 ## Tasks
 
----
-
 - Table名を複数形
 
 - Table名変更
@@ -31,8 +29,6 @@
         - [ ] payments
 
 ## Study
-
----
 
 - [ ] ウィンドウ関数
 - [ ] SubQuery時の `index`確認
