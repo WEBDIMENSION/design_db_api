@@ -1,33 +1,38 @@
-http://localhost:8001/users
-http://localhost:8001/users?page=10
-http://localhost:8001/users/?page=10
-http://localhost:8001/users/pages/10
-http://localhost:8001/users/10
-http://develop.local:8080/v1/users
-http://localhost:8001/v1/users
+# Memo
 
-```json
-List : [
-OrderedMap
-{
-"id": 1,
-"email": "john@example.com",
-"name": "john",
-"collection": "Baseball"
-},
-OrderedMap
-{
-"id": 2,
-"email": "pole@example.com",
-"name": "opole",
-"collection": "music"
-},
-OrderedMap
-{
-"id": 3,
-"email": "jimi@example.com",
-"name": "jimi",
-"collection": "guitar"
-}
-]
-```
+## Tasks
+
+---
+
+- Table名を複数形
+
+- Table名変更
+    - [ ] shipping -> deliveries
+
+
+- Table作成
+    - [ ] 商品ブランド : brands
+    - [ ] 商品カテゴリ : product_categories
+
+
+- データ量を増やす
+    - [ ] users
+    - [ ] products
+    - [ ] orders
+
+
+- OpenApi yml 記述
+    - CRUD
+        - [ ] users
+        - [ ] categories
+        - [ ] products
+        - [ ] orders
+        - [ ] deliveries
+        - [ ] payments
+
+## Study
+
+---
+
+- [ ] ウィンドウ関数
+- [ ] SubQuery時の `index`確認
