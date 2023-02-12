@@ -1,3 +1,110 @@
+--------------------------------
+---  staffs
+--------------------------------
+
+-- staff一覧
+explain
+select s.id, s.name, sr.name
+from staffs s
+         inner join staff_roles sr on s.staff_role_id = sr.id
+where s.delete_flg = false
+;
+
+-- 受注データから担当者指定
+explain
+select s.name, o.*
+from orders o
+         inner join staffs s
+                    on o.staff_id = s.id
+--     and s.id = 7
+where s.id = 7
+;
+
+
+--------------------------------
+--  users
+--------------------------------
+
+-- user 一覧
+explain
+select u.id, ur.user_rank_name, u.lastname, u.firstname, u.email
+from users u
+         inner join user_ranks ur
+                    on u.user_rank_id = ur.id
+order by u.id
+;
+
+-- 受注履歴
+explain
+select u.id, u.lastname, u.firstname, u.email, o.order_id
+from users u
+         inner join orders o on u.id = o.user_id
+order by o.order_id
+;
+
+-- ログイン履歴
+explain
+select u.id, u.lastname, u.firstname, u.email, lh.date, lh.ua, lh.ipv4
+from users u
+         inner join login_histories lh on u.id = lh.user_id
+;
+
+-- review 履歴
+explain
+select u.id, u.lastname, u.firstname, u.email, pr.product_id, pr.content, pr.review_valuation
+from users u
+         inner join product_reviews pr on u.id = pr.user_id
+order by u.id
+;
+
+--------------------------------
+--  products
+--------------------------------
+
+-- products 一覧
+explain
+select p.id, product_code, p.product_name, p.product_price, p.product_stock, pc.category_name, b.brand_name
+from products p
+         inner join product_categories pc on pc.id = p.category_id
+         inner join brands b on p.brand_id = b.id
+;
+
+--  products review
+explain
+select pr.id, product_name, pr.content, pr.review_valuation
+from product_reviews pr
+         inner join products p on pr.product_id = p.id
+;
+
+--------------------------------
+--  orders
+--------------------------------
+-- 明細
+explain
+select o.order_id, o.user_id,
+       ot.sub_total, ot.delivery_name, ot.delivery_cost, ot.payment_name, ot.payment_cost,
+       o.lastname, o.firstname, o.email, ur.user_rank_name, s.name,
+       od.product_id, od.product_code, od.shop_product_code, od.product_name, od.product_price, od.product_quantity,
+       pc.category_name,
+       b.brand_name
+from orders o
+         inner join order_details od on o.order_id = od.order_id
+         inner join order_totals ot on od.order_id = ot.order_id
+         inner join user_ranks ur on o.user_rank_id = ur.id
+         inner join staffs s on o.staff_id = s.id
+         inner join product_categories pc on o.delete_flg = pc.delete_flg
+         inner join brands b on od.brand_id = b.id
+order by o.user_id
+;
+
+-- 合計
+explain
+select o.order_id, o.sub_total, o.order_total, o.delivery_name, o.delivery_cost, o.payment_name, o.payment_cost
+from order_totals o
+;
+
+
+------------------------------------------------------------------
 
 explain
 select *
@@ -13,15 +120,15 @@ select *
 from users
 where lastname = '江古田';
 
-select u.lastname, u.firstname, r.name
+select u.lastname, u.firstname, r.user_rank_name
 from users u
          left join user_ranks r
-                   on u.user_ranks_id = r.id;
+                   on u.user_rank_id = r.id;
 explain
-select u.lastname, u.firstname, r.name
+select u.lastname, u.firstname, r.user_rank_name
 from users u
          left join user_ranks r
-                   on u.user_ranks_id = r.id;
+                   on u.user_rank_id = r.id;
 
 
 explain
@@ -29,69 +136,71 @@ select count(*)
 from orders;
 
 explain
-select o.orders_id, o.users_id, o.lastname, o.firstname, ur.name
+select o.order_id, o.user_id, o.lastname, o.firstname, ur.user_rank_name
 from orders o
          left join user_ranks ur
-                   ON o.users_id = ur.id
+                   ON o.user_id = ur.id
 ;
 
 
 select *
 from users u
-where u.user_ranks_id is null
+where u.user_rank_id is null
 ;
 
 select *
 from users u
-where u.user_ranks_id is not null
+where u.user_rank_id is not null
 ;
 
 
 explain
-select o.orders_id, o.users_id, o.lastname, o.firstname, ur.name
+select o.order_id, o.user_id, o.lastname, o.firstname, ur.user_rank_name
 from orders o
          inner join users u
-                    on o.users_id = u.id
+                    on o.user_id = u.id
          inner join user_ranks ur
-                    on u.`user_ranks_id` = ur.id
-where name = 'premium'
+                    on u.`user_rank_id` = ur.id
+where user_rank_name = 'premium'
 ;
 
 explain
-select o.orders_id, u.id, ur.name
+select o.order_id, u.id, ur.user_rank_name
 from user_ranks ur
          inner join users u
-                    on ur.id = u.`user_ranks_id`
-                        and ur.name = 'premium'
+                    on ur.id = u.`user_rank_id`
+                        and ur.user_rank_name = 'premium'
          inner join orders o
-                    on u.id = o.`users_id`
+                    on u.id = o.`user_id`
 ;
 
 
 
 explain
-select ur.name
+select ur.user_rank_name
 from user_ranks ur
          left join users u
-                   on ur.id = u.user_ranks_id
-where ur.name = 'premium'
+                   on ur.id = u.user_rank_id
+where ur.user_rank_name = 'premium'
 ;
 
 explain
-select ot.orders_id, ot.shipping_name, s.name
-from order_total ot
-         left join shipping s on ot.shipping_id = s.id
-where ot.shipping_id = 1
+select ot.order_id, d.delivery_name
+from order_totals ot
+         left join deliveries d on ot.delivery_id = d.id
+where ot.delivery_id = 1
 ;
 
 
 explain
-select ot.orders_id, ot.shipping_name, s.name
-from shipping s
-         inner join order_total ot on s.id = ot.shipping_id
-    and s.id = 1
+select ot.order_id, ot.delivery_name, d.delivery_name
+from deliveries d
+         inner join order_totals ot on d.id = ot.delivery_id
+    and d.id = 1
 ;
 
 
-select count(*) from order_total ot where ot.shipping_id = 1
+select count(*)
+from order_totals ot
+where ot.delivery_id = 1
 ;
