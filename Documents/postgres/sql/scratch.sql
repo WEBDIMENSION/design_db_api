@@ -17,9 +17,67 @@ from orders o
          inner join staffs s
                     on o.staff_id = s.id
 --     and s.id = 7
-where s.id = 7
+where s.id = 1
 ;
 
+-- subquery
+explain
+select o.*
+from orders o
+where o.staff_id = (select id from staffs where id = 7)
+;
+
+-- 担当している受注数
+explain
+select o.staff_id
+     , s.name
+     , count(o.staff_id)           as count
+     , cast(
+            (select count(id) from orders)
+    as numeric)                    as total_order_count
+     , cast(count(o.staff_id) / cast(
+            (select count(id) from orders)
+    as numeric)
+           as numeric(3, 3)) * 100 as division
+from orders o
+         join staffs s on s.id = o.staff_id
+group by o.staff_id, s.name
+order by count(o.staff_id) DESC
+;
+
+-- subquery
+explain
+select o.staff_id
+     , (select s.name from staffs s where s.id = o.staff_id) as name
+     , count(o.staff_id)                                     as count
+     , cast(
+            (select count(id) from orders)
+    as numeric)                                              as total_order_count
+     , cast(count(o.staff_id) / cast(
+            (select count(id) from orders)
+    as numeric)
+           as numeric(3, 3)) * 100                           as percennt
+from orders o
+group by o.staff_id
+order by count desc
+;
+
+-- window functions
+explain
+select max(o.staff_id) over (partition by staff_id)                    as staff_id
+     , ROW_NUMBER() OVER (PARTITION BY o.staff_id ORDER BY o.order_id) AS num
+     , o.order_id
+     , count(o.id) over (partition by staff_id)                        as count
+     , (select count(id) from orders)                                  as total_order_count
+     , round(
+               (count(o.id) over (partition by staff_id)
+                   /
+                cast((select count(id) from orders) as numeric)
+                   )
+           , 3) * 100
+                                                                       as percennt
+from orders o
+;
 
 --------------------------------
 --  users
@@ -81,10 +139,24 @@ from product_reviews pr
 --------------------------------
 -- 明細
 explain
-select o.order_id, o.user_id,
-       ot.sub_total, ot.delivery_name, ot.delivery_cost, ot.payment_name, ot.payment_cost,
-       o.lastname, o.firstname, o.email, ur.user_rank_name, s.name,
-       od.product_id, od.product_code, od.shop_product_code, od.product_name, od.product_price, od.product_quantity,
+select o.order_id,
+       o.user_id,
+       ot.sub_total,
+       ot.delivery_name,
+       ot.delivery_cost,
+       ot.payment_name,
+       ot.payment_cost,
+       o.lastname,
+       o.firstname,
+       o.email,
+       ur.user_rank_name,
+       s.name,
+       od.product_id,
+       od.product_code,
+       od.shop_product_code,
+       od.product_name,
+       od.product_price,
+       od.product_quantity,
        pc.category_name,
        b.brand_name
 from orders o
@@ -105,6 +177,11 @@ from order_totals o
 
 
 ------------------------------------------------------------------
+
+select count(*)
+from login_histories
+;
+
 
 explain
 select *

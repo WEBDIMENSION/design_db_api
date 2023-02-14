@@ -2,7 +2,7 @@
 
 ## Tasks
 
-- Table名を複数形
+- [x] Table名を複数形
 
 - Table名変更
     - [x] shipping -> deliveries
@@ -14,9 +14,13 @@
 
 
 - データ量を増やす
-    - [ ] users
-    - [ ] products
-    - [ ] orders
+    - [x] users
+    - [x] login_histories
+    - [x] products
+    - [x] orders
+    - [x] orders_details
+    - [x] order_totals
+    - [x] product_reviews
 
 
 - OpenApi yml 記述
@@ -30,5 +34,5 @@
 
 ## Study
 
-- [ ] ウィンドウ関数
-- [ ] SubQuery時の `index`確認
+- [x] ウィンドウ関数
+- [x] SubQuery時の `index`確認
