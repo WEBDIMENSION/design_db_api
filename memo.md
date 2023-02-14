@@ -25,12 +25,12 @@
 
 - OpenApi yml 記述
     - CRUD
-        - users
-        - categories
-        - brand
-        - products
-        - products_reviews
-        - orders
+        - [ ] users
+        - [ ] categories
+        - [ ] brand
+        - [ ] products
+        - [ ] products_reviews
+        - [ ] orders
 
 ## Study
 
