@@ -20,18 +20,31 @@ services:
       - '${PRISM_CLIENT_PORT}:4010'
 
   swagger-ui:
-    build: ./docker/react
+    build: ./docker/swagger_ui_react
     container_name: ${PRISM_CONTAINER_NAME_PREFIX}_swagger-ui
     environment:
       - CHOKIDAR_USEPOLLING=true
       - PORT=${SWAGGER_UI_CLIENT_PORT}
     volumes:
-      - ${DIR}/docker/react/public:/app/html/public
-      - ${DIR}/docker/react/src:/app/html/src
+      - ${DIR}/docker/swagger_ui_react/public:/app/html/public
+      - ${DIR}/docker/swagger_ui_react/src:/app/html/src
       - ${DIR}/generated/openapi/openapi.json:/app/html/public/openapi.json
-    command: sh -c "cd html && yarn start"
+#    command: sh -c "cd html && yarn start"
     ports:
       - "${SWAGGER_UI_CLIENT_PORT}:${SWAGGER_UI_CLIENT_PORT}"
+    working_dir: /app/html
+    tty: true
+
+#  swagger-ui:
+#     image: swaggerapi/swagger-ui
+#     container_name: ${PRISM_CONTAINER_NAME_PREFIX}_swagger-ui
+#     volumes:
+#       - ${DIR}/generated/openapi/openapi.json:/openapi.json
+# #      - ${DIR}/docker/swagger_ui/html:/usr/share/nginx/html
+#     environment:
+#       SWAGGER_JSON: /openapi.json
+#     ports:
+#       - "${SWAGGER_UI_CLIENT_PORT}:${SWAGGER_UI_SERVER_PORT}"
 
   schemaspy_mysql:
     image: schemaspy/schemaspy

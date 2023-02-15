@@ -8,7 +8,7 @@ properties:
     items:
       $ref: ./user.yml
   page_info:
-    $ref: ./page_info.yml
+    $ref: ../common/page_info.yml
 example:
   data:
     - id: 1

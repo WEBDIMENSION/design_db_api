@@ -8,14 +8,14 @@ DB設計・操作, API設計の習得を目標とする
 
 - Docker, Docker-comose
     - OpenApi
-    - swagger-ui + api
-    - prism
+    - Swagger-ui + api
+    - Prism
     - phpmig
-    - mysql8
-    - postgres14
-    - schemaspy + nginx
-        - for mysql
-        - for postgres
+    - MySQL8
+    - Postgres14
+    - Schemaspy + Nginx
+        - for MySQL
+        - for Postgres
 
 ### 振る舞い
 
@@ -63,7 +63,7 @@ docker-compose up -d
 ---
 
 ### swagger-u
-
+- `docker-compose exec yarn start` 時に起動(解析)する。
 - [swagger-ui : http://localhost:8002/](http://localhost:8002/)
 
 ---

@@ -1,27 +1,26 @@
 get:
-  operationId: get-users
-  summary: get users list (summary)
+  operationId: get_users
+  summary: get users list (All User)
   description: description post not
   tags: [ user ]
   parameters:
-    - $ref: ../../components/parameters/page.yml
-    - $ref: ../../components/parameters/per_page.yml
+    - $ref: ../../components/parameters/common/page.yml
+    - $ref: ../../components/parameters/common/per_page.yml
   responses:
     '200':
-      description: OK
+      description: Success
       links:
         GetUserByUserId:
-          operationId: usersget
+          operationId: get_users
           parameters:
             userId: '$response.body#/id'
           description: |
             The `id` value returned in the response can be used as  \
             the `userId` parameter in `GET /users/{userId}`.
-
       content:
         application/json:
           schema:
-            $ref: ../../components/schemas/user_list.yml
+            $ref: ../../components/schemas/users/user_list.yml
 post:
   operationId: usersPost
   summary: create new user
@@ -33,14 +32,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../../components/schemas/user_input.yml
+          $ref: ../../components/schemas/users/user_input.yml
   responses:
     '201':
       description: created
       content:
         application/json:
           schema:
-            $ref: ../../components/schemas/user.yml
+            $ref: ../../components/schemas/users/user.yml
     '400':
       description: The specified user ID is invalid (not a number).
     '404':
