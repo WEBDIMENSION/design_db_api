@@ -48,17 +48,15 @@ docker-compose up -d
 
 ### schemaspy
 
-- `docker-compose up -d` 時に起動(解析)する。
-- `depends_on:` でDB起動に依存。
-- DBに変更があった場合は `docker-compose up -d` or `docker-compose run --rm schemaspy_[mysql | postgres]`
-
 #### MySQL
 
 - [schemaspy : http://localhost:8003/](http://localhost:8003/)
+- [schemaspy : http://develop.local:8003/](http://develop.local:8003/)
 
 #### Postgres
 
 - [schemaspy : http://localhost:8004/](http://localhost:8004/)
+- [schemaspy : http://develop.local:8004/](http://develop.local:8004/)
 
 ---
 

@@ -1,5 +1,5 @@
 dist
-generated
+generated/openapi/openapi.json
 .env
 .node-version
 .devcontainer

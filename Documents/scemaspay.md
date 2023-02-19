@@ -11,3 +11,9 @@ DB構築(DDL)をER図でチェックする。
 
 **ER図 ( Schemaspy )**
 ![schemaspy](../schemaspy/mysql/output/diagrams/summary/relationships.real.large.png)
+
+## Usage
+
+- DBに変更があった場合は
+  - `docker-compose run --rm schemaspy_mysql`
+  - `docker-compose run --rm schemaspy_postgres`

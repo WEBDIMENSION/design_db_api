@@ -9,22 +9,41 @@ docker-compose exec phpmig vendor/bin/phpmig generate
 # status
 vendor/bin/phpmig status
 docker-compose exec phpmig vendor/bin/phpmig status
-# Migrate
+
+# Migrate In Container
 vendor/bin/phpmig migrate
-docker-compose exec phpmig vendor/bin/phpmig migrate
+#### mysql
+docker-compose run --rm phpmig_mysql vendor/bin/phpmig migrate
+#### postgres
+docker-compose run --rm phpmig_postgres vendor/bin/phpmig migrate
 # Rollback
 ## 1つ戻す 
 vendor/bin/phpmig rollback
-docker-compose exec phpmig vendor/bin/phpmig rollback
+#### mysql
+docker-compose exec phpmig_mysql vendor/bin/phpmig rollback
+#### postgres
+docker-compose exec phpmig_postgres vendor/bin/phpmig rollback
+
 ## 指定したところまで戻す 
 vendor/bin/phpmig rollback -t 20111101000144
-docker-compose exec phpmig vendor/bin/phpmig rollback -t 20111101000144
+#### mysql
+docker-compose exec phpmig_mysql vendor/bin/phpmig rollback -t 20111101000144
+#### postgres
+docker-compose exec phpmig_postgers vendor/bin/phpmig rollback -t 20111101000144
+
 ### 全て戻す
 vendor/bin/phpmig rollback -t 0
-docker-compose exec phpmig vendor/bin/phpmig rollback -t 0
-###指定したところを戻す
+#### mysql
+docker-compose exec phpmig_mysql vendor/bin/phpmig rollback -t 0
+#### postgres
+docker-compose exec phpmig_postgers vendor/bin/phpmig rollback -t 0
+
+### 指定したところを戻す
 vendor/bin/phpmig phpmig down 20111101000144
-docker-compose exec phpmig vendor/bin/phpmig down 20111101000144
+##EE mysql
+docker-compose exec phpmig_mysql vendor/bin/phpmig down 20111101000144
+#### postgres
+docker-compose exec phpmig_postgres vendor/bin/phpmig down 20111101000144
 ```
 
 ## Example Create Table

@@ -1,0 +1,349 @@
+{
+  "openapi" : "3.0.2",
+  "info" : {
+    "description" : "descriptionn",
+    "title" : "Structured OpenAPI Schema",
+    "version" : "1.0"
+  },
+  "servers" : [ {
+    "description" : "Mock server (prism)",
+    "url" : "http://develop.local:8001"
+  }, {
+    "description" : "Develop server",
+    "url" : "http://develop.local:{port}/{api_version}",
+    "variables" : {
+      "api_version" : {
+        "default" : "v1",
+        "enum" : [ "v1", "v2", "v3" ]
+      },
+      "port" : {
+        "default" : "8080",
+        "enum" : [ "8080", "8081", "8082" ]
+      }
+    }
+  } ],
+  "tags" : [ {
+    "description" : "tag for user",
+    "name" : "user"
+  } ],
+  "paths" : {
+    "/users" : {
+      "get" : {
+        "description" : "description post not",
+        "operationId" : "get_users",
+        "parameters" : [ {
+          "description" : "page number",
+          "in" : "query",
+          "name" : "page",
+          "required" : false,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        }, {
+          "description" : "number of items per page",
+          "in" : "query",
+          "name" : "per_page",
+          "required" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user_list"
+                }
+              }
+            },
+            "description" : "Success",
+            "links" : {
+              "GetUserByUserId" : {
+                "description" : "The `id` value returned in the response can be used as  \\\nthe `userId` parameter in `GET /users/{userId}`.\n",
+                "operationId" : "get_users",
+                "parameters" : {
+                  "userId" : "$response.body#/id"
+                }
+              }
+            }
+          }
+        },
+        "summary" : "get users list (All User)",
+        "tags" : [ "user" ]
+      },
+      "post" : {
+        "description" : "description",
+        "operationId" : "usersPost",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user_input"
+              }
+            }
+          },
+          "description" : "user information",
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user"
+                }
+              }
+            },
+            "description" : "created"
+          },
+          "400" : {
+            "description" : "The specified user ID is invalid (not a number)."
+          },
+          "404" : {
+            "description" : "A user with the specified ID was not found."
+          },
+          "default" : {
+            "description" : "default error"
+          }
+        },
+        "summary" : "create new user",
+        "tags" : [ "user" ]
+      }
+    },
+    "/users/{user_id}" : {
+      "delete" : {
+        "description" : "description",
+        "operationId" : "usersIdDelete",
+        "parameters" : [ {
+          "description" : "user id",
+          "in" : "path",
+          "name" : "user_id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "deleted"
+          }
+        },
+        "summary" : "delete user",
+        "tags" : [ "user" ]
+      },
+      "get" : {
+        "description" : "description",
+        "operationId" : "usersIdGet",
+        "parameters" : [ {
+          "description" : "user id",
+          "in" : "path",
+          "name" : "user_id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user"
+                }
+              }
+            },
+            "description" : "ok"
+          }
+        },
+        "summary" : "get user",
+        "tags" : [ "user" ]
+      },
+      "patch" : {
+        "description" : "description",
+        "operationId" : "usersIdPatch",
+        "parameters" : [ {
+          "description" : "user id",
+          "in" : "path",
+          "name" : "user_id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/user_input"
+              }
+            }
+          },
+          "description" : "user information",
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user"
+                }
+              }
+            },
+            "description" : "ok"
+          }
+        },
+        "summary" : "update user",
+        "tags" : [ "user" ]
+      }
+    }
+  },
+  "components" : {
+    "parameters" : {
+      "page" : {
+        "description" : "page number",
+        "in" : "query",
+        "name" : "page",
+        "required" : false,
+        "schema" : {
+          "format" : "int64",
+          "type" : "integer"
+        }
+      },
+      "per_page" : {
+        "description" : "number of items per page",
+        "in" : "query",
+        "name" : "per_page",
+        "required" : false,
+        "schema" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "schemas" : {
+      "user_list" : {
+        "example" : {
+          "data" : [ {
+            "id" : 1,
+            "email" : "john@example.com",
+            "name" : "john",
+            "collection" : "Baseball"
+          }, {
+            "id" : 2,
+            "email" : "pole@example.com",
+            "name" : "opole",
+            "collection" : "music"
+          }, {
+            "id" : 3,
+            "email" : "jimi@example.com",
+            "name" : "jimi",
+            "collection" : "guitar"
+          } ],
+          "page_info" : {
+            "page" : 1,
+            "per_page" : 3
+          }
+        },
+        "properties" : {
+          "data" : {
+            "items" : {
+              "$ref" : "#/components/schemas/user"
+            },
+            "type" : "array"
+          },
+          "page_info" : {
+            "$ref" : "#/components/schemas/page_info"
+          }
+        },
+        "required" : [ "data", "page_info" ],
+        "type" : "object"
+      },
+      "user_input" : {
+        "example" : {
+          "user" : {
+            "email" : "tommy@example.com",
+            "name" : "tommy",
+            "collection" : "Drums"
+          }
+        },
+        "properties" : {
+          "user" : {
+            "$ref" : "#/components/schemas/user_input_user"
+          }
+        },
+        "required" : [ "user" ],
+        "type" : "object"
+      },
+      "user" : {
+        "description" : "user",
+        "example" : {
+          "id" : 22,
+          "email" : "tommy@example.com",
+          "name" : "tommy",
+          "collection" : null
+        },
+        "properties" : {
+          "id" : {
+            "description" : "ID",
+            "minimum" : 1,
+            "type" : "integer"
+          },
+          "email" : {
+            "description" : "email address",
+            "format" : "email",
+            "type" : "string"
+          },
+          "name" : {
+            "description" : "name",
+            "type" : "string"
+          },
+          "collection" : {
+            "description" : "collection",
+            "type" : "string"
+          }
+        },
+        "required" : [ "collection", "email", "id", "name" ],
+        "type" : "object"
+      },
+      "page_info" : {
+        "description" : "page information",
+        "properties" : {
+          "page" : {
+            "description" : "page number",
+            "minimum" : 0,
+            "type" : "integer"
+          },
+          "per_page" : {
+            "description" : "number of items per page",
+            "minimum" : 1,
+            "type" : "integer"
+          }
+        },
+        "required" : [ "page", "per_page" ],
+        "type" : "object"
+      },
+      "user_input_user" : {
+        "description" : "user information",
+        "properties" : {
+          "email" : {
+            "description" : "email address",
+            "format" : "email",
+            "type" : "string"
+          },
+          "name" : {
+            "description" : "name",
+            "type" : "string"
+          },
+          "collection" : {
+            "description" : "collection",
+            "type" : "string"
+          }
+        },
+        "required" : [ "email", "name" ],
+        "type" : "object"
+      }
+    }
+  }
+}

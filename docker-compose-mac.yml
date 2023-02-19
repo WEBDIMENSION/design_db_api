@@ -5,7 +5,7 @@ services:
     build: ./docker/openapi
     container_name: ${PRISM_CONTAINER_NAME_PREFIX}_openapi
     volumes:
-      - ${DIR}/generated/openapi/openapi.json:/app/generated/openapi/openapi.json
+      - ${DIR}/generated:/app/generated
       - ${DIR}/openapi:/app/src
       - ${DIR}/docker/openapi/package.json:/app/package.json
     tty: true
@@ -13,8 +13,6 @@ services:
   prism:
     build: ./docker/prism
     container_name: ${PRISM_CONTAINER_NAME_PREFIX}_prism
-    depends_on:
-      - openapi
     command: 'mock -h 0.0.0.0 -d /app/openapi.json'
     volumes:
       - ${DIR}/generated/openapi/openapi.json:/app/openapi.json
@@ -31,20 +29,29 @@ services:
       - ${DIR}/docker/swagger_ui_react/public:/app/html/public
       - ${DIR}/docker/swagger_ui_react/src:/app/html/src
       - ${DIR}/generated/openapi/openapi.json:/app/html/public/openapi.json
-    command: sh -c "yarn start"
+#    command: sh -c "cd html && yarn start"
     ports:
       - "${SWAGGER_UI_CLIENT_PORT}:${SWAGGER_UI_CLIENT_PORT}"
     working_dir: /app/html
     tty: true
 
+#  swagger-ui:
+#     image: swaggerapi/swagger-ui
+#     container_name: ${PRISM_CONTAINER_NAME_PREFIX}_swagger_ui
+#     volumes:
+#       - ${DIR}/generated/openapi/openapi.json:/openapi.json
+# #      - ${DIR}/docker/swagger_ui/html:/usr/share/nginx/html
+#     environment:
+#       SWAGGER_JSON: /openapi.json
+#     ports:
+#       - "${SWAGGER_UI_CLIENT_PORT}:${SWAGGER_UI_SERVER_PORT}"
+
   schemaspy_mysql:
     image: schemaspy/schemaspy
-    profiles:
-      - debug
     container_name: ${PRISM_CONTAINER_NAME_PREFIX}_schemaspy_mysql
     volumes:
       - ${DIR}/schemaspy/mysql/output:/output
-      - ${DIR}/docker/schemaspy/drivers/mysql:${MYSQL_DRIVERS_DIR}
+      - ${DIR}/Docker/schemaspy/drivers/mysql:${MYSQL_DRIVERS_DIR}
     depends_on:
       - mysql
     command: >
@@ -61,15 +68,12 @@ services:
 
   schemaspy_postgres:
     image: schemaspy/schemaspy
-    profiles:
-      - debug
     container_name: ${PRISM_CONTAINER_NAME_PREFIX}_schemaspy_postgres
     volumes:
       - ${DIR}/schemaspy/postgres/output:/output
-      - ${DIR}/docker/schemaspy/drivers:${POSTGRES_DRIVERS_DIR}
+      - ${DIR}/Docker/schemaspy/drivers:${POSTGRES_DRIVERS_DIR}
     depends_on:
       - postgres
-
     command: >
       java -jar schemaspy.jar
       -t ${DB_TYPE_POSTGRES}
@@ -87,8 +91,8 @@ services:
     volumes:
       - ${DIR}/schemaspy/mysql/output:/var/www/html/schemaspy/mysql:ro
       - ${DIR}/schemaspy/postgres/output:/var/www/html/schemaspy/postgres:ro
-      - ${DIR}/docker/nginx/schemaspy_mysql.conf:/etc/nginx/conf.d/schemaspy_mysql.conf:ro
-      - ${DIR}/docker/nginx/schemaspy_postgres.conf:/etc/nginx/conf.d/schemaspy_postgres.conf:ro
+      - ${DIR}/Docker/nginx/schemaspy_mysql.conf:/etc/nginx/conf.d/schemaspy_mysql.conf:ro
+      - ${DIR}/Docker/nginx/schemaspy_postgres.conf:/etc/nginx/conf.d/schemaspy_postgres.conf:ro
     ports:
       - ${NGINX_SCHEMASPY_MYSQL_EXTERNAL_PORT}:${NGINX_SCHEMASPY_MYSQL_INTERNAL_PORT}
       - ${NGINX_SCHEMASPY_POSTGRES_EXTERNAL_PORT}:${NGINX_SCHEMASPY_POSTGRES_INTERNAL_PORT}
@@ -97,16 +101,19 @@ services:
       - TZ=Asia/Tokyo
     command: "nginx -g 'daemon off;'"
 
-  phpmig_mysql:
-    build: ./docker/phpmig
-    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_phpmig_mysql
+  phpmig:
+    build: ./Docker/phpmig
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_phpmig
     volumes:
       - ${DIR}//Docker/phpmig/src/:/app/src
-      - ${DIR}/docker/phpmig/php.ini:/usr/local/etc/php/php.ini
-      - ${DIR}/docker/phpmig/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ${DIR}/Docker/phpmig/php.ini:/usr/local/etc/php/php.ini
+      - ${DIR}/Docker/phpmig/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ${DIR}/phpmig:/phpmig
+    depends_on:
+      - mysql
+      - postgres
     environment:
-      TARGET_DB: ${TARGET_DB_MYSQL}
+      TARGET_DB: ${TARGET_DB}
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -114,38 +121,23 @@ services:
       MYSQL_INTERNAL_PORT: ${MYSQL_INTERNAL_PORT}
       XDEBUG_PORT: ${XDEBUG_PORT}
       XDEBUG_KEY: ${XDEBUG_KEY}
-
-  phpmig_postgres:
-    build: ./docker/phpmig
-    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_phpmig_postgres
-    volumes:
-      - ${DIR}//Docker/phpmig/src/:/app/src
-      - ${DIR}/docker/phpmig/php.ini:/usr/local/etc/php/php.ini
-      - ${DIR}/docker/phpmig/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-      - ${DIR}/phpmig:/phpmig
-    environment:
-      TARGET_DB: ${TARGET_DB_POSTGRES}
-      XDEBUG_PORT: ${XDEBUG_PORT}
-      XDEBUG_KEY: ${XDEBUG_KEY}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_INTERNAL_PORT: ${POSTGRES_INTERNAL_PORT}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    tty: true
 
   mysql:
-#    image: mysql:8.0
-    build: ./docker/mysql
+    image: mysql:8.0
     container_name: ${PRISM_CONTAINER_NAME_PREFIX}_mysql
     user: "999:999"
     volumes:
-      - ${DIR}/docker/mysql/my.cnf:/etc/my.cnf
-      #- ${DIR}/docker/mysql/data:/var/lib/mysql
-#      - ${DIR}/docker/mysql/data_multipass:/var/lib/mysql
-      - volume-mysql:/var/lib/mysql
-      - ${DIR}/docker/mysql/backup:/tmp/mysql
-      - ${DIR}/docker/mysql/init:/docker-entrypoint-initdb.d
-#      - ${DIR}/docker/mysql/logs:/var/log/mysql
+      - ${DIR}/Docker/mysql/my.cnf:/etc/my.cnf
+      - ${DIR}/Docker/mysql/data:/var/lib/mysql
+      - ${DIR}/Docker/mysql/backup:/tmp/mysql
+      - ${DIR}/Docker/mysql/init:/docker-entrypoint-initdb.d
+      - ${DIR}/Docker/mysql/logs:/var/log/mysql
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -154,8 +146,7 @@ services:
       TZ: ${TZ}
     ports:
       - ${MYSQL_EXTERNAL_PORT}:${MYSQL_INTERNAL_PORT}
-    command: --default-authentication-plugin=mysql_native_password
-    #command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb_use_native_aio=0
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb_use_native_aio=0
 
   postgres:
     image: postgres:14
@@ -164,19 +155,9 @@ services:
     ports:
       - ${POSTGRES_EXTERNAL_PORT}:${POSTGRES_INTERNAL_PORT}
     volumes:
-#      - ${DIR}/docker/postgres/data_multipass:/var/lib/postgresqldata
-      - volume-postgres:/var/lib/postgresql/data
+      - ${DIR}/Docker/postgres/data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      PGDATA: /var/lib/postgresql/data/pgdata
       TZ: ${TZ}
-networks:
-  default:
-    external: false
-volumes:
-  volume-mysql:
-    name: design-db-api-mysql
-  volume-postgres:
-    name: design-db-api-postgres

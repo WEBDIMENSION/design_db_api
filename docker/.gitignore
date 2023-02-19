@@ -1,3 +1,5 @@
 mysql/data
+mysql/data_multipass
 mysql/logs
 postgres/data
+postgres/data_multipass
