@@ -50,25 +50,27 @@ docker-compose up -d
 
 #### MySQL
 
-- [schemaspy : http://localhost:8003/](http://localhost:8003/)
-- [schemaspy : http://develop.local:8003/](http://develop.local:8003/)
+- [schemaspy : http://localhost:49164/](http://localhost:49164/)
+- [schemaspy : http://develop.local:49164/](http://develop.local:49164/)
 
 #### Postgres
 
-- [schemaspy : http://localhost:8004/](http://localhost:8004/)
-- [schemaspy : http://develop.local:8004/](http://develop.local:8004/)
+- [schemaspy : http://localhost:49165/](http://localhost:49165/)
+- [schemaspy : http://develop.local:49165/](http://develop.local:49165/)
 
 ---
 
 ### swagger-u
 - `docker-compose exec yarn start` 時に起動(解析)する。
-- [swagger-ui : http://localhost:8002/](http://localhost:8002/)
+- [swagger-ui : http://localhost:49161/](http://localhost:49161/)
+- [swagger-ui : http://develop.local:49161/](http://localhost:49161/)
 
 ---
 
 ### prism
 
-- [swagger-ui : http://localhost:8001/user](http://localhost:8001/user)
+- [swagger-ui : http://localhost:49160/user](http://localhost:49160/user)
+- [swagger-ui : http://develop.local:49160/user](http://localhost:49160/user)
 
 *parameter is see suwagger-ui
 
