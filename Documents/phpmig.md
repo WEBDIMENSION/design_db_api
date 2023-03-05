@@ -16,7 +16,11 @@ vendor/bin/phpmig migrate
 docker-compose run --rm phpmig_mysql vendor/bin/phpmig migrate
 #### postgres
 docker-compose run --rm phpmig_postgres vendor/bin/phpmig migrate
-# Rollback
+````
+
+## Rollback
+
+```bash
 ## 1つ戻す 
 vendor/bin/phpmig rollback
 #### mysql

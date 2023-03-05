@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  mysql:
+    #    image: mysql:8.0
+    build: ./docker/mysql
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_mysql
+    user: "999:999"
+    volumes:
+      - ${DIR}/docker/mysql/my.cnf:/etc/my.cnf
+      #- ${DIR}/docker/mysql/data:/var/lib/mysql
+      #      - ${DIR}/docker/mysql/data_multipass:/var/lib/mysql
+      - volume-mysql:/var/lib/mysql
+      - ${DIR}/docker/mysql/backup:/tmp/mysql
+      - ${DIR}/docker/mysql/init:/docker-entrypoint-initdb.d
+    #      - ${DIR}/docker/mysql/logs:/var/log/mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: ${TZ}
+    ports:
+      - ${MYSQL_EXTERNAL_PORT}:${MYSQL_INTERNAL_PORT}
+    command: --default-authentication-plugin=mysql_native_password
+    #command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb_use_native_aio=0
+
+
+  laravel-nginx:
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_laravel-nginx
+    build: ./docker/laravel_nginx
+    depends_on:
+      - laravel-app
+    ports:
+      - ${LARAVEL_EXTERNAL_PORT}:${LARAVEL_INTERNAL_PORT}
+    volumes:
+      - ./fw/laravel9:/src
+      - ./docker/laravel_nginx/default.conf:/etc/nginx/conf.d/default.conf
+  # Todo     - ./docker/laravel_nginx/logs:/src/docker/nginx/logs
+
+  laravel-app:
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_laravel-app
+    build: ./docker/laravel_app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    #    depends_on:
+    #      - laravel-mysql
+    volumes:
+      - ./fw/laravel9:/src
+#      - ./docker/laravel_app/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/laravel_app/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    environment:
+      XDEBUG_PORT: ${XDEBUG_PORT}
+      XDEBUG_KEY: ${XDEBUG_KEY}
+    ports:
+     - "9003:9003"
+
+
+  laravel-redis:
+    image: redis:alpine
+    container_name: ${PRISM_CONTAINER_NAME_PREFIX}_laravel-redis
+    ports:
+      - ${REDIS_EXTERNAL_PORT}:${REDIS_INTERNAL_PORT}
+
+networks:
+  default:
+    external: false
+volumes:
+  volume-mysql:
+    name: design-db-api-mysql
+  volume-postgres:
+    name: design-db-api-postgres

@@ -69,11 +69,17 @@ docker-compose up -d
 
 ### prism
 
-- [swagger-ui : http://localhost:49160/user](http://localhost:49160/user)
-- [swagger-ui : http://develop.local:49160/user](http://localhost:49160/user)
+- [swagger-ui : http://localhost:49160/user](http://localhost:49159/users)
+- [swagger-ui : http://develop.local:49160/user](http://localhost:49159/users)
 
 *parameter is see suwagger-ui
 
+
+### Laravel
+
+- [laravel : http://localhost:49170](http://localhost:49170)
+- [laravel : http://develop.local:49170/user](http://develop.local:49170)
+ 
 ---
 
 ## Theme
@@ -110,5 +116,6 @@ docker compose exec laravel-app bash
 composer create-project "laravel/laravel=9.*"  laravel9  --prefer-dist
 cd laravel9
 chmod -R guo+w storage
+
 php artisan storage:link
 ```

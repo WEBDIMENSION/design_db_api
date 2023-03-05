@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.0-fpm
 RUN apt-get update \
     && apt-get install -y \
     git \
@@ -16,6 +16,9 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install pdo_mysql mysqli exif
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
+
 RUN cd /usr/bin && curl -s http://getcomposer.org/installer | php && ln -s /usr/bin/composer.phar /usr/bin/composer
 
 ENV NODE_VERSION=16.14.0
@@ -28,6 +31,8 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 RUN node --version
 RUN npm --version
 
+
+
 WORKDIR /src
-#ADD . /src/storage
-#RUN chown -R www-data:www-data /src/storage
+ADD . /src/storage
+RUN chown -R www-data:www-data /src/storage

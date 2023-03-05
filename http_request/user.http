@@ -1,0 +1,4 @@
+
+#Fetch user
+
+{{protcol}}{{baseUrl}}/api/{{apiVersionn}}/user/id/100

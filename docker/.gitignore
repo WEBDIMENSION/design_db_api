@@ -1,8 +1,7 @@
 mysql/data
-mysql/data_multipass
 mysql/logs
 mysql/backup
 postgres/data
-postgres/data_multipass
-laravel_nginx/logs
+postgres/backup
+laravel_nginx/log
 nginx_schemaspy/lo

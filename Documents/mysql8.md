@@ -7,6 +7,14 @@ drenv allow
 docker-compose exec mysql mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}
 ```
 
+## Backup
+
+```bash
+#mysqldump -u USER_NAME -p -h HOST_NAME DB_NAME > OUTPUT_FILE_NAME
+mysqldump --no-tablespaces -u phpmig -p -h localhost ec  > /mysql_backup/backup.sql
+```
+
+
 ## 実行計画 (explain)
 
 ### type
