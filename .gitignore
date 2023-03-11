@@ -7,3 +7,4 @@ generated/openapi/openapi.json
 .vscode
 schemaspy/output
 php-fpm/src/vendor
+php-fpm/src/cache
