@@ -1,0 +1,6 @@
+in: path
+name: offset
+description: number of offset
+required: false
+schema:
+  type: integer

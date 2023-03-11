@@ -1,4 +1,7 @@
 
-#Fetch user
+# User list
+{{protcol}}{{baseUrl}}/api/{{apiVersionn}}/users/limit/10/offset/5
 
-{{protcol}}{{baseUrl}}/api/{{apiVersionn}}/user/id/100
+
+###Fetch user
+{{protcol}}{{baseUrl}}/api/{{apiVersionn}}/users/id/100

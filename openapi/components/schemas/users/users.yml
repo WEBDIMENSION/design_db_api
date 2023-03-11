@@ -1,14 +1,14 @@
 type: object
 required:
   - data
-  - page_info
+#  - page_nation
 properties:
   data:
     type: array
     items:
       $ref: ./user.yml
-  page_info:
-    $ref: ../common/page_info.yml
+#  page_nation:
+#    $ref: ../common/page_nation.yml
 example:
   data:
     - id: 1
@@ -23,6 +23,6 @@ example:
       email: jimi@example.com
       name: jimi
       collection: guitar
-  page_info:
-    page: 1
-    per_page: 3
+#  page_nation:
+#    offset: 1
+#    limit: 3

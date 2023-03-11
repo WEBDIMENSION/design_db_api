@@ -6,3 +6,4 @@ generated/openapi/openapi.json
 *.code-workspace
 .vscode
 schemaspy/output
+php-fpm/src/vendor

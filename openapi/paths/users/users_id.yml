@@ -5,14 +5,14 @@ get:
   tags: [user]
   parameters:
     - in: path
-      name: user_id
-      description: user id
+      name: id
+      description: users_id
       required: true
       schema:
         type: integer
   responses:
     '200':
-      description: ok
+      description: Success
       content:
         application/json:
           schema:

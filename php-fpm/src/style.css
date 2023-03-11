@@ -1,0 +1,18 @@
+@charset "utf-8";
+ul >li {
+    list-style: none;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+ul > li a {
+    text-decoration: none;
+}
+
+ul > li a:visited {
+    color: #000;
+}
+
+ul > li a:link {
+    color: #000;
+}

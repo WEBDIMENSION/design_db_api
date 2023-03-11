@@ -21,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function (){
-    Route::get('user/id/{id}', [UserController::class, 'fetch']);
+    Route::get('users/id/{id}', [UserController::class, 'fetch']);
+    Route::get('users/limit/{limit}/offset/{offset}', [UserController::class, 'list']);
 });

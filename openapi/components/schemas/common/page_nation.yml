@@ -1,0 +1,12 @@
+type: object
+description: page information
+required: [limit, offset]
+properties:
+  limit:
+    type: integer
+    minimum: 1
+    description: limit
+  offset:
+    type: integer
+    minimum: 1
+    description: offset

@@ -1,0 +1,6 @@
+in: path
+name: limit
+description: number of row
+required: false
+schema:
+  type: integer

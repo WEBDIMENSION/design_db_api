@@ -1,0 +1,23 @@
+get:
+  operationId: get_users
+  summary: Get users list
+  description: Get users
+  tags: [ user ]
+  parameters:
+#    - $ref: ../../components/parameters/common/limit.yml
+#    - $ref: ../../components/parameters/common/offset.yml
+  responses:
+    '200':
+      description: Success
+      links:
+        GetUserByUserId:
+          operationId: get_users
+          parameters:
+            userId: '$response.body#/id'
+          description: |
+            The `id` value returned in the response can be used as  \
+            the `userId` parameter in `GET /users/{userId}`.
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/users/users.yml

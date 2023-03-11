@@ -14,8 +14,18 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function fetch(Request $request) {
-        $request2 = $request;
         $user = User::find($request->id);
         return response()->json($user);
     }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function list(Request $request) {
+        $user = User::limit($request->limit)->offset($request->offset)->get();
+        return response()->json($user);
+    }
+
 }
