@@ -46,41 +46,9 @@ docker-compose up -d
 
  ---
 
-### schemaspy
+###  Index
 
-#### MySQL
-
-- [schemaspy : http://localhost:49164/](http://localhost:49164/)
-- [schemaspy : http://develop.local:49164/](http://develop.local:49164/)
-
-#### Postgres
-
-- [schemaspy : http://localhost:49165/](http://localhost:49165/)
-- [schemaspy : http://develop.local:49165/](http://develop.local:49165/)
-
----
-
-### swagger-u
-- `docker-compose exec yarn start` 時に起動(解析)する。
-- [swagger-ui : http://localhost:49161/](http://localhost:49161/)
-- [swagger-ui : http://develop.local:49161/](http://localhost:49161/)
-
----
-
-### prism
-
-- [swagger-ui : http://localhost:49160/user](http://localhost:49159/users)
-- [swagger-ui : http://develop.local:49160/user](http://localhost:49159/users)
-
-*parameter is see suwagger-ui
-
-
-### Laravel
-
-- [laravel : http://localhost:49170](http://localhost:49170)
-- [laravel : http://develop.local:49170/user](http://develop.local:49170)
- 
----
+- [Index : http://localhost:49172/](http://localhost:49172/)
 
 ## Theme
 

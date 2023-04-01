@@ -9,13 +9,15 @@
 </head>
 <body>
 <h1>{{$title}}</h1>
-<ul>
-    <li>php version: {{$php_version}}</li>
-    <li>IP: {{$ip}}</li>
-    <li>{{$docker_on}}</li>
-</ul>
-
-<hr>
+<dl>
+    <dt>php version</dt>
+    <dd>{{$php_version}}</dd>
+    <dt>IP:</dt>
+    <dd>{{$ip}}</dd>
+    <dt>host</dt>
+    <dd>{{$docker_on}}</dd>
+</dl>
+<h2>Services</h2>
 <ul>
     @for ($i = 0; $i < sizeof($links); $i++)
         <li><a target="_blank" href="{{$links[$i]['href']}}">{{$links[$i]['service_name']}}</a></li>
