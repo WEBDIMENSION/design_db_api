@@ -15,5 +15,5 @@ DB構築(DDL)をER図でチェックする。
 ## Usage
 
 - DBに変更があった場合は
-  - `docker-compose run --rm schemaspy_mysql`
-  - `docker-compose run --rm schemaspy_postgres`
+  - `docker-compose run --rm schemaspy_laravel_mysql`
+  - `docker-compose run --rm schemaspy_laravel_postgres`

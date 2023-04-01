@@ -38,8 +38,10 @@ services:
     tty: true
 
   schemaspy_laravel_mysql:
+
     image: schemaspy/schemaspy
     container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_laravel_mysql
+    profiles: [ "debug" ]
     volumes:
       - ${PWD}/schemaspy/laravel_mysql/output:/output
       - ${PWD}/Docker/schemaspy/drivers/mysql:${LARAVEL_MYSQL_DRIVERS_DIR}
