@@ -82,8 +82,9 @@ ECサイトのDBを想定
 ```absh
 docker compose exec laravel-app bash
 composer create-project "laravel/laravel=9.*"  laravel9  --prefer-dist
+
 cd laravel9
 chmod -R guo+w storage
-
 php artisan storage:link
+
 ```
