@@ -51,6 +51,7 @@ php artisan make:seeder OrderStatusTableSeeder
 php artisan db:seed
 php artisan migrate:fresh
 php artisan migrate:refresh
+php artisan migrate:refresh --seed
 
 # Only Class
 php artisan db:seed --class=UserRankTableSeeder

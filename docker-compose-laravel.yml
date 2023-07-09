@@ -3,7 +3,6 @@ version: '3'
 services:
   openapi:
     build: ./docker/openapi
-    profiles: [ "debug" ]
     container_name: ${CONTAINER_NAME_PREFIX}_openapi
     volumes:
       - ${PWD}/generated/openapi/openapi.json:/app/generated/openapi/openapi.json
@@ -14,7 +13,6 @@ services:
   prism:
     build: ./docker/prism
     container_name: ${CONTAINER_NAME_PREFIX}_prism
-    profiles: [ "debug" ]
     depends_on:
       - openapi
     command: 'mock -h 0.0.0.0 -d /app/openapi.json'
@@ -26,7 +24,6 @@ services:
   swagger-ui:
     build: ./docker/swagger_ui_react
     container_name: ${CONTAINER_NAME_PREFIX}_swagger-ui
-    profiles: [ "debug" ]
     environment:
       - CHOKIDAR_USEPOLLING=true
       - PORT=${SWAGGER_UI_CLIENT_PORT}
@@ -40,122 +37,107 @@ services:
     working_dir: /app/html
     tty: true
 
-  schemaspy_mysql:
+  schemaspy_laravel_mysql:
     image: schemaspy/schemaspy
-    container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_mysql
+    container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_laravel_mysql
     profiles: [ "debug" ]
     volumes:
-      - ${PWD}/schemaspy/mysql/output:/output
-      - ${PWD}/Docker/schemaspy/drivers/mysql:${MYSQL_DRIVERS_DIR}
+      - ${PWD}/schemaspy/laravel_mysql/output:/output
+      - ${PWD}/Docker/schemaspy/drivers/mysql:${LARAVEL_MYSQL_DRIVERS_DIR}
     depends_on:
-      - mysql
+      - laravel-mysql
     command: >
       java -jar schemaspy.jar
-      -t ${MYSQL_DB_TYPE}
-      -host ${MYSQL_HOST}
-      -port ${MYSQL_INTERNAL_PORT}
-      -db ${MYSQL_DATABASE}
-      -u root
-      -p ${MYSQL_ROOT_PASSWORD}
-      -s ${MYSQL_SCHEMA}
+      -t ${LARAVEL_DB_TYPE}
+      -dp ${LARAVEL_MYSQL_DRIVERS_DIR}
+      -host ${LARAVEL_MYSQL_HOST}
+      -port ${LARAVEL_MYSQL_INTERNAL_PORT}
+      -db ${LARAVEL_MYSQL_DATABASE}
+      -u ${LARAVEL_MYSQL_USER}
+      -p ${LARAVEL_MYSQL_PASSWORD}
+      -s ${LARAVEL_MYSQL_SCHEMA}
       -connprops allowPublicKeyRetrieval\\=false useSSL\\=false
 
-  nginx-web-develop:
+  nginx:
     image: nginx:1.13.9-alpine
-    container_name: ${CONTAINER_NAME_PREFIX}_nginx-web-develop
+    container_name: ${CONTAINER_NAME_PREFIX}_nginx
     volumes:
-      # nginx.conf
-      - ${PWD}/docker/nginx-web-develop/default.conf:/etc/nginx/conf.d/default.conf:ro
-      # schemaspy
-      - ${PWD}/schemaspy/mysql/output:/var/www/html/schemaspy/mysql:ro
-      - ${PWD}/docker/nginx-web-develop/schemaspy.conf:/etc/nginx/conf.d/schemaspy.conf:ro
-      # web-develop index
-      - ${PWD}/php-fpm-web-develop/src:/usr/share/nginx/html
+      - ${PWD}/schemaspy/laravel_mysql/output:/var/www/html/schemaspy/laravel_mysql:ro
+      - ${PWD}/docker/nginx/schemaspy_laravel_mysql.conf:/etc/nginx/conf.d/schemaspy_laravel_mysql.conf:ro
+      - ${PWD}/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ${PWD}/php-fpm/src:/usr/share/nginx/html
     #      - ${PWD}/.env:/usr/share/nginx/html/.env
     ports:
-      - ${NGINX_SCHEMASPY_MYSQL_EXTERNAL_PORT}:${NGINX_SCHEMASPY_MYSQL_INTERNAL_PORT}
+      - ${NGINX_SCHEMASPY_LARAVEL_MYSQL_EXTERNAL_PORT}:${NGINX_SCHEMASPY_LARAVEL_MYSQL_INTERNAL_PORT}
       - ${NGINX_EXTERNAL_PORT}:${NGINX_INTERNAL_PORT}
-
     environment:
       - LANG=ja_JP.UTF-8
       - TZ=Asia/Tokyo
     command: "nginx -g 'daemon off;'"
 
-  php-fpm-web-develop:
-    build: ./docker/php-fpm-web-develop
-    container_name: ${CONTAINER_NAME_PREFIX}_php-fpm-web-develop
+  php-fpm:
+    build: ./docker/php-fpm
     volumes:
-      - ${PWD}/php-fpm-web-develop/src:/usr/share/nginx/html
+      - ${PWD}/php-fpm/src:/usr/share/nginx/html
+      #- ${DIR_PATH}/${PHP_FPM_HOST_DIR}/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      #- ${DIR_PATH}/${PHP_FPM_HOST_DIR}/php.ini:/usr/local/etc/php/php.ini
     env_file:
       - .env
     working_dir: /usr/share/nginx/html
 
-  nginx-app:
-    container_name: ${CONTAINER_NAME_PREFIX}_nginx-app
-    build: ./docker/nginx-app
+  laravel-nginx:
+    container_name: ${CONTAINER_NAME_PREFIX}_laravel-nginx
+    build: ./docker/laravel_nginx
+    depends_on:
+      - laravel-app
     ports:
-      - ${APP_EXTERNAL_PORT}:${APP_INTERNAL_PORT}
-    environment:
-      - FRAMEWORK:${FRAMEWORK}
+      - ${LARAVEL_EXTERNAL_PORT}:${LARAVEL_INTERNAL_PORT}
     volumes:
-      - ${PWD}/fw/${FRAMEWORK}:/src
-      - ${PWD}/docker/${FRAMEWORK}/default.conf:/etc/nginx/conf.d/default.conf
-      - ${PWD}/docker/${FRAMEWORK}/log:/var/log/nginx
+      - ${PWD}/fw/laravel9:/src
+      - ${PWD}/docker/laravel_nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ${PWD}/docker/laravel_nginx/log:/var/log/nginx
   # Todo     - ./docker/laravel_nginx/logs:/src/docker/nginx/logs
 
-  laravel9:
-    build: ./docker/${FRAMEWORK}
-    container_name: ${CONTAINER_NAME_PREFIX}_laravel9
-    profiles: [ "debug" ]
+  laravel-app:
+    container_name: ${CONTAINER_NAME_PREFIX}_laravel-app
+    build: ./docker/laravel_app
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    #    depends_on:
+    #      - laravel-mysql
     volumes:
-      - ${PWD}/fw/${FRAMEWORK}:/src
-      - ${PWD}/docker/${FRAMEWORK}/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-      - ${PWD}/docker/${FRAMEWORK}/php.ini:/usr/local/etc/php/php.ini
+      - ${PWD}/fw/laravel9:/src
+      #      - ./docker/laravel_app/php.ini:/usr/local/etc/php/php.ini
+      - ${PWD}/docker/laravel_app/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     environment:
       XDEBUG_PORT: ${XDEBUG_PORT}
       XDEBUG_KEY: ${XDEBUG_KEY}
-    working_dir: /src
 
-  cake3:
-    container_name: ${CONTAINER_NAME_PREFIX}_cake3
-    build: ./docker/${FRAMEWORK}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - ${PWD}/fw/${FRAMEWORK}:/src
-      - ${PWD}/docker/${FRAMEWORK}/xdebug.ini:/vsr/local/etc/php/conf.d/xdebug.ini
-    environment:
-      XDEBUG_PORT: ${XDEBUG_PORT}
-      XDEBUG_KEY: ${XDEBUG_KEY}
-    working_dir: /src
-
-  mysql:
+  laravel-mysql:
     build: ./docker/mysql
-    container_name: ${CONTAINER_NAME_PREFIX}_mysql
+    container_name: ${CONTAINER_NAME_PREFIX}_laravel_mysql
     #    user: "999:999"
     volumes:
       - ${PWD}/docker/mysql/my.cnf:/etc/my.cnf
       #- ${PWD}/docker/mysql/data:/var/lib/mysql
-      - volume-webdevelop-mysql:/var/lib/mysql
+      - volume-laravel-mysql:/var/lib/mysql
       - ${PWD}/docker/mysql/backup:/mysql_backup:rwx
       - ${PWD}/docker/mysql/init:/docker-entrypoint-initdb.d
     #      - ${PWD}/docker/mysql/logs:/var/log/mysql
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${LARAVEL_MYSQL_DATABASE}
+      MYSQL_USER: ${LARAVEL_MYSQL_USER}
+      MYSQL_PASSWORD: ${LARAVEL_MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${LARAVEL_MYSQL_ROOT_PASSWORD}
       TZ: ${TZ}
     ports:
-      - ${MYSQL_EXTERNAL_PORT}:${MYSQL_INTERNAL_PORT}
+      - ${LARAVEL_MYSQL_EXTERNAL_PORT}:${LARAVEL_MYSQL_INTERNAL_PORT}
     command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb_use_native_aio=0
 
 
-  redis:
+  laravel-redis:
     image: redis:alpine
-    container_name: ${CONTAINER_NAME_PREFIX}_redis
+    container_name: ${CONTAINER_NAME_PREFIX}_laravel-redis
     ports:
       - ${REDIS_EXTERNAL_PORT}:${REDIS_INTERNAL_PORT}
 
@@ -203,7 +185,7 @@ networks:
   default:
     external: false
 volumes:
-  volume-webdevelop-mysql:
-    name: ${CONTAINER_NAME_PREFIX}_mysql
+  volume-laravel-mysql:
+    name: ${CONTAINER_NAME_PREFIX}_laravel_mysql
     labels:
       keep: true
