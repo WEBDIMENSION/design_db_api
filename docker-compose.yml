@@ -38,7 +38,6 @@ services:
     tty: true
 
   schemaspy_laravel_mysql:
-
     image: schemaspy/schemaspy
     container_name: ${CONTAINER_NAME_PREFIX}_schemaspy_laravel_mysql
     profiles: [ "debug" ]
