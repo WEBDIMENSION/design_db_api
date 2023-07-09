@@ -3,5 +3,6 @@ mysql/logs
 mysql/backup
 postgres/data
 postgres/backup
-laravel_nginx/log
+laravel9/log
+cake3/log
 nginx_schemaspy/lo
