@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   openapi:
@@ -123,12 +123,24 @@ services:
   cake3:
     build: ./docker/${FRAMEWORK}
     container_name: ${CONTAINER_NAME_PREFIX}_cake3
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
     volumes:
       - ${PWD}/fw/${FRAMEWORK}:/src
-      - ${PWD}/docker/${FRAMEWORK}/xdebug.ini:/vsr/local/etc/php/conf.d/xdebug.ini
+      - ${PWD}/docker/${FRAMEWORK}/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ${PWD}/docker/${FRAMEWORK}/php.ini:/usr/local/etc/php/php.ini
     environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_ROOT_USER}
+      MYSQL_ROOT_USER: ${MYSQL_ROOT_USER}
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      ENCODING: ${ENCODING}
+      TZ: ${TZ}
+      CACHE_CLASS_NAME: ${CACHE_CLASS_NAME}
+      REDIS_HOST_NAME: ${REDIS_HOST_NAME}
+      REDIS_INTERNAL_PORT: ${REDIS_INTERNAL_PORT}
       XDEBUG_PORT: ${XDEBUG_PORT}
       XDEBUG_KEY: ${XDEBUG_KEY}
     working_dir: /src
@@ -154,12 +166,86 @@ services:
       - ${MYSQL_EXTERNAL_PORT}:${MYSQL_INTERNAL_PORT}
     command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb_use_native_aio=0
 
-
   redis:
     image: redis:alpine
     container_name: ${CONTAINER_NAME_PREFIX}_redis
     ports:
       - ${REDIS_EXTERNAL_PORT}:${REDIS_INTERNAL_PORT}
+
+  localstack:
+    container_name: ${CONTAINER_NAME_PREFIX}_localstack
+    profiles: [ "debug" ]
+    image: localstack/localstack:latest
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+      - ${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}
+    environment:
+      DEBUG: ${DEBUG-}
+      DOCKER_HOST: unix:///var/run/docker.sock
+      SERVICES: dynamodb, s3
+      PERSISTENCE: 1
+      AWS_DEFAULT_REGION: ${AWS_REGION}
+      DATA_DIR: /tmp/localstack/data
+    volumes:
+      - ${PWD}/docker/localstack/data:/var/lib/localstack
+      - ${PWD}/docker/localstack/s3:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}/docker/localstack/.aws:/root/.aws
+#    environment:
+#      - SERVICES=dynamodb
+#      - PERSISTENCE=1
+#      - DEFAULT_REGION=ap-northeast
+#      - DATA_DIR=/tmp/localstack/data
+
+#    volumes:
+#      - '/var/run/docker.sock:/var/run/docker.sock'
+#      - ${PWD}/docker/dynamodb/data:/home/dynamodblocal/data
+#      - ${PWD}/docker/localstack/.aws:/root/.aws
+#      - ${PWD}/docker/localstack/data:/tmp/localstack
+
+  aws-cli:
+    build: ./docker/aws-cli
+    volumes:
+      - ${PWD}/docker/aws-cli/.aws:/root/.aws
+    tty:
+      true
+
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: ${CONTAINER_NAME_PREFIX}_minio
+    environment:
+      MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
+      MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+    command: server --console-address ":9090" /data
+    volumes:
+      - ${PWD}/docker/minio/data:/data
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+
+  dynamodb:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    #    profiles: [ "debug" ]
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - ${PWD}/docker/dynamodb/data:/home/dynamodblocal/data
+    working_dir: /home/dynamodblocal
+
+  dynamodb-admin:
+    container_name: ${CONTAINER_NAME_PREFIX}_dynamodb-admin
+#    profiles: [ "debug" ]
+    image: aaronshaf/dynamodb-admin:latest
+    environment:
+      DYNAMO_ENDPOINT: http://localstack:4566
+      AWS_REGION: ${AWS_DEFAULT_REGION}
+    ports:
+      - 8001:8001
+    depends_on:
+      - dynamodb
 
   elasticsearch:
     build: ./docker/elasticsearch

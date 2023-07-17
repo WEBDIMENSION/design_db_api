@@ -69,6 +69,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
+    $routes->connect('/redis-connect', ['controller' => 'RedisConnect', 'action' => 'index']);
     /*
      * Connect catchall routes for all controllers.
      *

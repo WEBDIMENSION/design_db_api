@@ -97,9 +97,12 @@ return [
      */
     'Cache' => [
         'default' => [
-            'className' => FileEngine::class,
+//            'className' => FileEngine::class,
+            'className' => env('CACHE_CLASS_NAME', FileEngine::class),
             'path' => CACHE,
             'url' => env('CACHE_DEFAULT_URL', null),
+            'port' => env('REDIS_INTERNAL_PORT', '6379'),
+            'host' => env('REDIS_HOST_NAME', 'localhost'),
         ],
 
         /*
@@ -145,8 +148,16 @@ return [
             'duration' => '+1 years',
             'url' => env('CACHE_CAKEROUTES_URL', null),
         ],
+        'session' => [
+            'className' => env('CACHE_CLASS_NAME', FileEngine::class),
+            'prefix' => 'session_redis_',
+            'path' => CACHE,
+            'port' => env('REDIS_INTERNAL_PORT', '6379'),
+            'host' => env('REDIS_HOST_NAME', 'localhost'),
+            'duration' => '+180 days',
+            'fallback' => 'default',
+        ],
     ],
-
     /*
      * Configure the Error and Exception handlers used by your application.
      *
@@ -233,6 +244,7 @@ return [
      * easier. Each profile accepts a number of keys. See `Cake\Mailer\Email`
      * for more information.
      */
+
     'Email' => [
         'default' => [
             'transport' => 'default',
@@ -263,24 +275,28 @@ return [
             'className' => Connection::class,
             'driver' => Mysql::class,
             'persistent' => false,
-            'host' => 'localhost',
+            'host' => env('MYSQL_HOST', 'localhost'),
             /*
              * CakePHP will use the default DB port based on the driver selected
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
              * the following line and set the port accordingly
              */
             //'port' => 'non_standard_port_number',
+            //'port' => '3306',
             /*
              * It is recommended to set these options through your environment or app_local.php
              */
             //'username' => 'my_app',
             //'password' => 'secret',
             //'database' => 'my_app',
+            'username' => env('MYSQL_ROOT_USER', 'root'),
+            'password' => env('MYSQL_ROOT_PASSWORD', 'password'),
+            'database' => env('MYSQL_DATABASE', 'cake_db'),
             /*
              * You do not need to set this flag to use full utf-8 encoding (internal default since CakePHP 3.6).
              */
-            //'encoding' => 'utf8mb4',
-            'timezone' => 'UTC',
+            'encoding' => env('ENCODING', 'utf8mb4'),
+            'timezone' => env('TZ', 'UTC'),
             'flags' => [],
             'cacheMetadata' => true,
             'log' => false,
@@ -398,7 +414,15 @@ return [
      *
      * To use database sessions, load the SQL file located at config/schema/sessions.sql
      */
+    //'Session' => [
+    //    'defaults' => 'php',
+    //],
     'Session' => [
-        'defaults' => 'php',
+        'defaults' => 'cache',
+        'handler' => [
+            'config' => 'session',
+        ],
     ],
+
+
 ];
