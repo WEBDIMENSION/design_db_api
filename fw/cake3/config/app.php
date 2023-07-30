@@ -424,5 +424,16 @@ return [
         ],
     ],
 
+    'AWS' => [
+        'dynamodb' => [
+            'region'   => env('AWS_ACCESS_KEY_ID','ap-northeast-1'),
+            'version'  => env('AWS_DYNAMODB_VERSION','latest'),
+            'endpoint' => env('AWS_DYNAMODB_ENDPOINT','http://dynamodb:8000'),
+            'credentials' => [
+                'key' => env('AWS_ACCESS_KEY_ID','dummy'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY','dummy'),
+            ],
+        ]
+    ],
 
 ];

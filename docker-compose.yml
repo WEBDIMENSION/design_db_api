@@ -228,7 +228,7 @@ services:
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
     #    profiles: [ "debug" ]
     image: "amazon/dynamodb-local:latest"
-    container_name: dynamodb-local
+    container_name: ${CONTAINER_NAME_PREFIX}_dynamodb-local
     ports:
       - "8000:8000"
     volumes:
@@ -240,7 +240,7 @@ services:
 #    profiles: [ "debug" ]
     image: aaronshaf/dynamodb-admin:latest
     environment:
-      DYNAMO_ENDPOINT: http://localstack:4566
+      DYNAMO_ENDPOINT: http://dynamodb:8000
       AWS_REGION: ${AWS_DEFAULT_REGION}
     ports:
       - 8001:8001

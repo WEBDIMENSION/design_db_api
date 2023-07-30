@@ -6,3 +6,6 @@ postgres/backup
 laravel9/log
 cake3/log
 nginx_schemaspy/lo
+dynamodb/data
+minio/data
+aws-cli/.aws/credentials
